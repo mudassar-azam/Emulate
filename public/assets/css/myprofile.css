@@ -1,0 +1,267 @@
+* {
+  margin: 0;
+}
+
+.mp-back {
+  position: absolute;
+  z-index: 5000;
+  left: 2rem;
+  top: 8rem;
+  font-size: larger;
+}
+
+.mp-menubar {
+  display: none;
+}
+.mp-container {
+  height: 100vh;
+  width: 100%;
+  /* background-color: azure; */
+  display: grid;
+  place-items: center;
+  /*   padding: 30px 25px; */
+}
+
+.box {
+  /* background-color: white;  */
+  /*   max-width: 900px; */
+  width: 100%;
+  height: 100%;
+  /* padding: 40px; */
+  /* padding-bottom: 50px; */
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between; /* Ensure the tabs and content are spaced out */
+}
+
+.box .main-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: indigo;
+  margin-bottom: 20px;
+}
+
+.my-box-card {
+  display: flex;
+  justify-content: flex-end; /* Align the tabs to the right */
+  height: 100%; /* Make card height full */
+  width: 100%;
+  position: relative;
+}
+
+.my-box-card input[type="radio"] {
+  display: none;
+}
+
+.my-box-card .list {
+  width: 300px; /* Set width for tabs */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-top: 4rem;
+  position: absolute;
+  left: 0; /* Move the list (tabs) to the right */
+  background-color: white; /* Ensure the background of the tabs is white */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Optional: add shadow to the tab section */
+}
+
+.list label {
+  width: 60%; /* Make label full width */
+  height: 60px; /* Adjust height to look more balanced */
+  display: flex;
+  padding-left: 20px;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  color: gray;
+  z-index: 5;
+  cursor: pointer;
+}
+
+.list label:hover {
+  color: black;
+}
+
+#home:checked ~ .list .home,
+#blog:checked ~ .list .blog,
+#help:checked ~ .list .help,
+#code:checked ~ .list .code,
+#about:checked ~ .list .about {
+  color: white;
+}
+
+.list .indicator {
+  width: 60%;
+  height: 60px;
+  background-color: black;
+  position: absolute;
+  top: 0;
+  transition: 0.3s ease-in;
+}
+
+#home:checked ~ .list .indicator {
+  top: 4rem;
+}
+
+#blog:checked ~ .list .indicator {
+  top: calc(4rem + 60px);
+}
+
+#help:checked ~ .list .indicator {
+  top: calc(4rem + 120px);
+}
+
+#code:checked ~ .list .indicator {
+  top: calc(4rem + 180px);
+}
+
+#about:checked ~ .list .indicator {
+  top: calc(4rem + 240px);
+}
+
+.my-box-card .content {
+  width: calc(100% - 310px); /* Adjust width to accommodate the tab list */
+  padding-right: 10px;
+  padding-top: 4rem;
+}
+
+.content .home,
+.content .blog,
+.content .help,
+.content .code,
+.content .about {
+  display: none;
+}
+
+.content .sub-title {
+  font-size: 21px;
+  font-weight: 600;
+}
+
+.content hr {
+  height: 3px;
+  background-color: black;
+}
+
+.content .txt {
+  margin-top: 5px;
+  color: gray;
+  text-align: justify;
+  font-size: 16px;
+}
+
+#home:checked ~ .content .home,
+#blog:checked ~ .content .blog,
+#help:checked ~ .content .help,
+#code:checked ~ .content .code,
+#about:checked ~ .content .about {
+  display: block;
+}
+
+.container.id-001.account-details.id-002 {
+  width: 80%;
+  margin: auto;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.container.id-001.account-details.id-002 h2 {
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.container.id-001.account-details.id-002 .divider.id-003 {
+  border: none;
+  border-bottom: 1px solid black;
+  margin-bottom: 20px;
+}
+
+.container.id-001.account-details.id-002 .profile-section.id-004 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.container.id-001.account-details.id-002 .profile-pic.id-005 {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.container.id-001.account-details.id-002 .email-section.id-006 {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.container.id-001.account-details.id-002 .email-text.id-007 {
+  color: gray;
+}
+.container.id-001.account-details.id-002 .email-text.id-007 span {
+  font-weight: bold;
+  color: black;
+}
+
+.container.id-001.account-details.id-002 .change-button.id-008 {
+  background-color: white;
+  border: 2px solid black;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.container.id-001.account-details.id-002 .change-button.id-008:hover {
+  background-color: black;
+  color: white;
+}
+
+.container.id-001.account-details.id-002 .form-section.id-009 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.container.id-001.account-details.id-002 .form-group.id-010,
+.container.id-001.account-details.id-002 .form-group.id-013,
+.container.id-001.account-details.id-002 .form-group.id-016 {
+  display: flex;
+  gap: 20px;
+}
+
+.container.id-001.account-details.id-002 .form-input.id-011,
+.container.id-001.account-details.id-002 .form-input.id-012,
+.container.id-001.account-details.id-002 .form-input.id-014,
+.container.id-001.account-details.id-002 .form-input.id-015,
+.container.id-001.account-details.id-002 .form-input.id-017 {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+@media screen and (max-width: 480px) {
+  .mp-menubar {
+    display: block;
+    position: absolute;
+    z-index: 5000;
+    right: 2.5rem;
+    top: 8rem;
+    font-size: larger;
+  }
+  .my-box-card .list {
+    left: -100%;
+  }
+  .my-box-card .content {
+    width: 100%;
+    padding-right: 0;
+  }
+  .container.id-001.account-details.id-002 {
+    width: 98%;
+  }
+}

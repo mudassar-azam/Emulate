@@ -1,0 +1,150 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.checkout-container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  /* padding: 50px; */
+}
+.rentals-section {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+.ship-to-section,
+.rentals-section {
+  width: 50%;
+  padding: 20px;
+}
+
+.rentals-section h2 {
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.ship-to-form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.place-order-btn {
+  width: 100%;
+  padding: 15px;
+  background-color: black;
+  color: white;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 15px;
+}
+
+.order-terms {
+  font-size: 12px;
+  margin-top: 15px;
+}
+
+.order-terms a {
+  color: black;
+  text-decoration: none;
+}
+
+.rental-items-container{
+    max-height: 40vh;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    
+}
+
+.rental-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.rental-details {
+  display: flex;
+  align-items: center;
+}
+
+.rental-details img {
+  width: 80px;
+  margin-right: 15px;
+}
+
+.rental-description {
+  font-size: 14px;
+}
+
+.rental-action {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rental-price {
+  font-weight: bold;
+}
+
+.remove-item {
+  cursor: pointer;
+}
+
+.promo-code {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.promo-code input {
+  width: 70%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.apply-btn {
+  width: 30%;
+  padding: 10px;
+  background-color: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+.pricing-summary p {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.total-price {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+@media screen and (max-width: 480px) {
+  .checkout-container {
+    flex-direction: column;
+  }
+  .ship-to-section,
+  .rentals-section {
+    width: 100%;
+  }
+}

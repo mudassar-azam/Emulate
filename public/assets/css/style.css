@@ -1,0 +1,578 @@
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-primary-dark: #777a80;
+  /* Define your dark primary color */
+  --color-primary-light: #919191;
+  /* Define your light primary color */
+  --color-gray-light: #d9d9d9;
+  /* Light gray background */
+  --color-black: #000000;
+  /* Black */
+  --color-white: #ffffff;
+  /* White */
+}
+
+/* Body Styles */
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f5f5f5;
+}
+
+.settings-btn {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.settings-btn i {
+  color: white;
+}
+
+
+.alert {
+  position: absolute !important;
+  top: 1em;
+  right: 3em;
+  z-index: 999999 !important;
+  padding: 2em !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1em !important;
+  width: 20% !important;
+}
+
+.alert-danger {
+  background: black !important;
+  box-shadow: 0px 0px 10px 0px black;
+  color: white !important;
+}
+
+.alert-success {
+  background: black !important;
+  box-shadow: 0px 0px 10px 0px black;
+  color: white !important;
+}
+
+.alert ul {
+  margin: 0;
+  font-size: 1em;
+  color: white !important;
+}
+
+a {
+  text-decoration: none;
+  color: #000000;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.main {
+  margin-top: 75px;
+}
+
+/* Banner Section */
+.banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px;
+  background: url("../images/banner.jpg") center center / cover no-repeat;
+  color: var(--color-white);
+  min-height: 80vh;
+}
+
+.banner-content h1 {
+  font-size: 48px;
+  max-width: 500px;
+}
+
+.cta-btn {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  padding: 15px 30px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.banner-image img {
+  max-width: 500px;
+  height: auto;
+}
+
+/* .image-section styles start  */
+.image-section .container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+
+.image-section .image-card {
+  position: relative;
+  width: 23%;
+  /* Set width for 4 images in a row */
+  overflow: hidden;
+  /* border-radius: 10px; */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-section .image-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  /* Ensures the image covers the div with the proper aspect ratio */
+  transition: transform 0.4s ease-in-out;
+  aspect-ratio: 3/5;
+  /* Enforces 4:3 aspect ratio */
+  max-height: 600px;
+  /* Adjust this to increase the image height */
+}
+
+.image-section .image-card:hover img {
+  transform: scale(1.1);
+  /* Zoom effect on hover */
+}
+
+.image-section .overlay2 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(256, 256, 256, 0.6);
+  /* Black transparent overlay */
+  height: 0;
+  overflow: hidden;
+  transition: height 0.4s ease-in-out;
+  z-index: 999;
+  box-shadow: inset 0px 11px 8px -10px rgba(197, 189, 189, 0.3),
+    inset 0px 11px 8px -10px rgba(197, 189, 189, 0.3);
+  clip-path: polygon(0 10%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.image-section .image-card:hover .overlay2 {
+  height: 60%;
+  /* The overlay pops up to 50% of the image */
+}
+
+.image-section .overlay-content {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  color: var(--color-black);
+  padding: 20px;
+  text-align: left;
+  opacity: 0;
+  transition: opacity 0.9s ease-in-out;
+}
+
+.image-section .image-card:hover .overlay-content {
+  opacity: 1;
+  /* Text fades in */
+}
+
+.image-section h2 {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.image-section p {
+  font-size: 0.8rem;
+}
+
+/* .image-section styles end */
+
+.image-box-banner {
+  background-color: var(--color-gray-light);
+  min-height: 45vh;
+  /* Height for the banner */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.image-box-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.image-box {
+  text-align: center;
+  width: 20%;
+  /* Each image box takes 15% of the container width */
+  margin: 0 10px;
+}
+
+.image-box img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  /* Circular image */
+  border: 4px solid --color-white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.image-box:hover img {
+  transform: scale(1.1);
+  /* Slight zoom on hover */
+}
+
+.image-box p {
+  margin-top: 10px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-black);
+}
+
+.reserve-banner-section {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* height: 100vh; */
+  background-color: #f4f4f4;
+  margin: 1rem 0;
+}
+
+.reserve-banner-section .banner-container {
+  width: 100%;
+  max-width: 1200px;
+  min-height: 500px;
+  background-image: url('https://via.placeholder.com/1200x400');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.banner-container .reserve-content {
+  text-align: center;
+  color: black;
+  padding: 20px;
+  width: 60%;
+  border-radius: 10px;
+}
+
+.reserve-banner-section .reserve-content h1 {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+}
+
+.reserve-banner-section .reserve-content p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.reserve-banner-section .reserve-content a {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #fff;
+  color: black;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0px;
+  border-radius: 25px;
+  text-transform: uppercase;
+}
+
+.reserve-banner-section .reserve-content a:hover {
+  background-color: black;
+  color: white;
+}
+
+.trending-container {
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+}
+
+.trending-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.product-slider {
+  display: flex;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  padding-bottom: 20px;
+}
+
+.product-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.product-slider .product-item {
+  flex: 0 0 24%;
+  margin: 0 10px;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: left;
+}
+
+.product-slider .product-image {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.product-slider .product-name {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 3px 0;
+  color: var(--color-black);
+}
+
+.product-slider .product-price {
+  font-size: 0.8rem;
+  color: var(--color-primary-light);
+}
+
+.slider-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.slider-btn {
+  background-color: var(--color-black);
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: background-color 0.3s;
+}
+
+.slider-btn:hover {
+  background-color: var(--color-white);
+  color: var(--color-black);
+  box-shadow: 0 0 10px var(--color-primary-dark);
+}
+
+.faq-banner {
+  width: 100%;
+  background-color: white;
+  padding: 60px 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.faq-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: var(--color-black);
+}
+
+.faq-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  border-bottom: 1px solid #ddd;
+  padding: 15px 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.faq-item h4 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--color-black);
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-item p {
+  font-size: 1rem;
+  color: var(--color-primary-dark);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.faq-item.open p {
+  max-height: 100px;
+}
+
+.faq-item h4::after {
+  content: "\002B";
+  font-size: 24px;
+  position: relative;
+  color: var(--color-black);
+}
+
+.faq-item.open h4::after {
+  content: "\2212";
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .faq-title {
+    font-size: 24px;
+  }
+
+  .faq-item h4 {
+    font-size: 16px;
+  }
+
+  .faq-item p {
+    font-size: 14px;
+  }
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .banner-content h1 {
+    font-size: 32px;
+  }
+
+  .banner-image img {
+    max-width: 300px;
+  }
+
+  .banner {
+    height: 60vh;
+  }
+
+  .popup-content {
+    width: 90%;
+  }
+
+  .image-section .image-card {
+    width: 48%;
+    /* Two images per row on smaller screens */
+  }
+
+  .image-box {
+    width: 20%;
+    /* Adjust size for smaller screens */
+  }
+
+  .reserve-banner-section {
+    /* height: 80vh; */
+  }
+
+  .banner-container .reserve-content {
+    width: 70%;
+  }
+
+  .product-item {
+    flex: 0 0 150px;
+  }
+
+  .product-image {
+    height: 150px;
+  }
+
+  .trending-title {
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .image-section .image-card {
+    width: 100%;
+    /* One image per row on very small screens */
+  }
+
+  .image-box-container {
+    flex-wrap: wrap;
+  }
+
+  .image-box {
+    width: 30%;
+    /* Stack more tightly on small screens */
+  }
+
+  .image-box img {
+    width: 80px;
+    height: 80px;
+    /* Smaller images on mobile */
+  }
+
+  .image-box p {
+    font-size: 14px;
+    /* Adjust text size for mobile */
+  }
+
+  .reserve-banner-section {
+    /* height: 60vh; */
+
+  }
+
+
+  .banner-container .reserve-content {
+    padding: 10px;
+    width: 90%;
+  }
+
+
+  .reserve-banner-section .reserve-content h1 {
+    font-size: 1.2rem;
+  }
+
+  .reserve-banner-section .reserve-content p {
+    font-size: 0.9rem;
+  }
+
+  .reserve-banner-section .reserve-content a {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .product-slider .product-item {
+    flex: 0 0 49%;
+  }
+
+  .product-image {
+    height: 120px;
+  }
+
+  .trending-title {
+    font-size: 20px;
+  }
+}

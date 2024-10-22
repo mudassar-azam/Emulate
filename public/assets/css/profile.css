@@ -1,0 +1,357 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.profile-section {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.profile-info {
+  display: flex;
+  align-items: flex-start;
+}
+
+.profile-img {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  margin-right: 20px;
+}
+
+.profile-details h1 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.profile-details p {
+  margin: 10px 0;
+  font-size: 16px;
+  max-width: 500px;
+}
+
+.subscribe-btn {
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.social-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.social-icons button {
+  margin-right: 1rem;
+}
+.social-icons a i {
+  width: 1.2rem;
+  height: 1.2rem;
+  color: black;
+  margin-right: 5px;
+}
+
+.subscriber-count {
+  text-align: right;
+}
+
+.subscriber-count h2 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.subscriber-count p {
+  font-size: 1rem;
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.tab.active {
+  border-bottom: 2px solid black;
+}
+
+.search-section {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.search-section input {
+  width: 40%;
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-section p {
+  margin: 10px 0;
+}
+
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.item {
+  text-align: center;
+}
+
+.item img {
+  width: 100%;
+  height: auto;
+  background-color: #ccc;
+}
+
+.item p {
+  margin: 10px 0;
+}
+
+.tab1-content,
+.tab2-content {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  display: none; /* Ensure hidden by default */
+}
+
+.tab.active {
+  border-bottom: 2px solid black; /* Active tab style */
+}
+
+/* Make the active content visible */
+.tab1-content.active-content,
+.tab2-content.active-content {
+  opacity: 1;
+  display: block;
+}
+
+.add-new-item{
+    border: 2px solid black;
+    font-weight: 700;
+    padding: 5px 10px;
+}
+#addnewitem-popup .container,
+#addnewpost-popup .container,
+#setting-popup .container ,
+#mail-popup .container{
+    width: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+#addnewitem-popup .container .sub-container,
+#addnewpost-popup .container .sub-container,
+#setting-popup .container .sub-container,
+#mail-popup .container .sub-container{
+    padding: 10px 30px;
+}
+
+#addnewitem-popup .container::-webkit-scrollbar,
+#addnewpost-popup .container::-webkit-scrollbar,
+#setting-popup .container::-webkit-scrollbar {
+    display: none;
+}
+
+#addnewitem-popup .container h2,
+#addnewpost-popup .container h2,
+#setting-popup .container h2,
+#mail-popup .container h2 {
+    font-size: 1rem;
+}
+
+#addnewitem-popup .container a,
+#addnewpost-popup .container a,
+#setting-popup .container a {
+    font-size: 0.8rem;
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+}
+
+#addnewitem-popup label,
+#addnewpost-popup label,
+#setting-popup label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    color: gray;
+}
+
+#addnewitem-popup input[type="text"],
+#mail-popup input[type="email"],
+#addnewpost-popup input[type="text"],
+#setting-popup input[type="text"],
+#addnewitem-popup input[type="file"],
+#addnewpost-popup input[type="file"],
+#setting-popup input[type="file"],
+#addnewitem-popup input[type="number"],
+#addnewpost-popup input[type="number"],
+#setting-popup input[type="number"],
+#addnewitem-popup select,
+#addnewpost-popup select,
+#setting-popup select,
+#addnewitem-popup textarea,
+#addnewpost-popup textarea,
+#setting-popup textarea {
+    width: 100%;
+    padding: 6px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#addnewitem-popup .add-link,
+#addnewpost-popup .add-link,
+#setting-popup .add-link {
+    width: 100%!important;
+    padding: 10px;
+    color: #000;
+    border: 1px solid #000;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-left: 0;
+    margin-bottom: 1rem;
+}
+
+  
+.file-upload-container {
+    width: 100%;
+    padding: 20px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    text-align: center;
+    background-color: white;
+    transition: border-color 0.3s;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.file-upload-container:hover {
+    border-color: #666;
+}
+
+.file-upload-label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.3s;
+}
+
+.file-upload-container:hover .file-upload-label {
+    color: #444;
+}
+
+.import-btn {
+    margin-top: 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.import-btn:hover {
+    background-color: #333;
+}
+
+.file-input {
+    display: none;
+}
+
+#file-list {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.file-item {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.file-item span {
+    font-size: 14px;
+}
+
+
+@media screen and (max-width: 480px) {
+  .profile-img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+  }
+
+  .profile-details h1 {
+    font-size: 0.8rem;
+  }
+  .subscriber-count h2 {
+    font-size: 1rem;
+  }
+
+  .subscriber-count p {
+    font-size: 0.6rem;
+  }
+  .search-section {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-end;
+  }
+  
+  .search-section input {
+    width: 100%;
+  }
+  
+  .search-section p {
+    margin: 10px 0;
+  }
+  
+}
