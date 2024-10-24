@@ -171,10 +171,7 @@
                 <input type="text" id="zip" name="zip" placeholder="Enter ZIP Code">
 
                 <label for="size">Size</label>
-                <select id="size" name="size">
-                    <option disabled>select size</option>
-                    <option value="{{$item->size}}">{{$item->size}}</option>
-                </select>
+                <input type="text" name="size" value="{{$item->size}}" readonly>
 
                 <input type="hidden" name="product_id" value="{{$item->id}}">
 
@@ -197,7 +194,6 @@ function goBack() {
 </script>
 
 <link rel='stylesheet' href='https://sachinchoolur.github.io/lightslider/dist/css/lightslider.css'>
-
 <script src='https://sachinchoolur.github.io/lightslider/dist/js/lightslider.js'></script>
 <script>
 $('#lightSlider').lightSlider({
@@ -237,14 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    toastr.success('Thanks for placing your order. Proceed to checkout',
-                        'Success', {
-                            positionClass: 'toast-top-right',
-                            timeOut: 3000
-                        });
-                    setTimeout(function() {
-                        location.reload();
-                    }, 2000);
+                    window.location.href = "{{ route('buyer.checkout') }}";
                 } else {
                     toastr.error('Already Sold', 'Success', {
                         positionClass: 'toast-top-right',

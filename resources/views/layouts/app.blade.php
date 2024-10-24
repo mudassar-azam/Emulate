@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel='stylesheet' href='https://sachinchoolur.github.io/lightslider/dist/css/lightslider.css'>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
@@ -71,7 +70,7 @@
 
         <form class="confirmOrderForm" action="{{route('buyer.cart.confirm.order')}}" method="post">
             @csrf
-            <button class="confirmOrderButton checkout-btn" type="button">Confirm Order</button>
+            <button class="confirmOrderButton checkout-btn" type="button">Checkout</button>
         </form>
 
     </div>
@@ -370,6 +369,13 @@
                         });
                     }
 
+                    if (data.status === 'out_of_stock') {
+                        toastr.error('Product is out of stock.', 'Error', {
+                            positionClass: 'toast-top-right',
+                            timeOut: 3000
+                        });
+                    }
+
                     fetchCartItems();
                 })
         });
@@ -406,45 +412,35 @@
 
     <!-- to confirm order  -->
     <script>
-    document.querySelector('.confirmOrderButton').addEventListener('click', function() {
-        const form = document.querySelector('.confirmOrderForm');
-        const formData = new FormData(form);
+        document.querySelector('.confirmOrderButton').addEventListener('click', function() {
+            const form = document.querySelector('.confirmOrderForm');
+            const formData = new FormData(form);
 
-        fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.confirmed_items && data.confirmed_items.length > 0) {
-                    if (!data.out_of_stock_items || data.out_of_stock_items.length === 0) {
+            fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
                         window.location.href = "{{ route('buyer.checkout') }}";
                     } else {
-                        toastr.error(data.message, 'Error', {
-                            positionClass: 'toast-top-right',
-                            timeOut: 5000
-                        });
-
-                        setTimeout(() => {
-                            window.location.reload(); 
-                        }, 5000);
+                        window.location.reload();
                     }
-                } else if (data.out_of_stock_items && data.out_of_stock_items.length > 0) {
-                    toastr.error(data.message, 'Error', {
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    toastr.error('An error occurred while confirming the order.', 'Error', {
                         positionClass: 'toast-top-right',
-                        timeOut: 4000
+                        timeOut: 5000
                     });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while confirming the order.');
-            });
-    });
-</script>
+                });
+        });
+    </script>
+
 
 
 </body>

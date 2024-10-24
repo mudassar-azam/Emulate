@@ -241,7 +241,7 @@
         <div class="sub-container">
             <form id="createPost" action="{{ route('post.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
-                <label for="post">Post</label>
+                <label for="post">Description</label>
                 <textarea id="post" name="post" rows="3">
                 </textarea>
 
@@ -277,7 +277,7 @@
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name" placeholder="Name" value="{{$user->name}}">
 
-                <label for="introduction">Introduce</label>
+                <label for="introduction">Bio</label>
                 @if($user->settings && $user->settings->introduction)
                 <textarea id="introduction" name="introduction" rows="3">{{ $user->settings->introduction }}</textarea>
                 @else

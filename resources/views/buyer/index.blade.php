@@ -6,10 +6,16 @@
     <section class="banner">
         <div class="banner-content">
             <h1>Rent or Own Iconic outfits from your favorite celebrities</h1>
-            <button class="cta-btn rounded-btn">Drip Me Out</button>
+            @auth
+            <button class="cta-btn rounded-btn" onclick="window.location.href='{{ route('products.index') }}'">Purchase
+                Now</button>
+            @else
+            <button class="cta-btn rounded-btn" onclick="openPopup('signin')">Purchase Now</button>
+            @endauth
+
         </div>
         <div class="banner-image">
-            <!-- <img src="your-image.jpg" alt="Celebrity Outfit" /> -->
+
         </div>
     </section>
 
@@ -17,23 +23,29 @@
     <section class="image-section">
         <div class="container">
             @foreach($users as $user)
-                <div class="image-card">
-                    @if($user->settings && $user->settings->profile)
-                    <img src="{{ asset('sellers-profiles/' . $user->settings->profile) }}">
-                    @else
-                    <img src="{{asset('default.jfif')}}" alt="Image 1">
-                    @endif
-                    <div class="overlay2">
-                        <div class="overlay-content">
-                            @if($user->name != null)
+            <div class="image-card">
+                @if($user->settings && $user->settings->profile)
+                <a href="{{route('seller.profile' , $user->id)}}"><img
+                        src="{{ asset('sellers-profiles/' . $user->settings->profile) }}"></a>
+                @else
+                <a href="{{route('seller.profile' , $user->id)}}"> <img src="{{asset('default.jfif')}}"
+                        alt="Image 1"></a>
+                @endif
+                <div class="overlay2">
+                    <div class="overlay-content">
+                        @if($user->name != null)
+                        <a href="{{route('seller.profile' , $user->id)}}">
                             <h2>{{$user->name}}</h2>
-                            @endif
-                            @if($user->settings && $user->settings->introduction)
+                        </a>
+                        @endif
+                        @if($user->settings && $user->settings->introduction)
+                        <a href="{{route('seller.profile' , $user->id)}}">
                             <p>{{ $user->settings->introduction }}</p>
-                            @endif
-                        </div>
+                        </a>
+                        @endif
                     </div>
                 </div>
+            </div>
             @endforeach
         </div>
     </section>
@@ -42,14 +54,16 @@
     <section class="image-box-banner">
         <div class="image-box-container">
             @foreach($sellers as $seller)
-                <div class="image-box">
-                    @if($seller->settings && $seller->settings->profile)
-                        <img src="{{ asset('sellers-profiles/' . $seller->settings->profile) }}">
-                    @else
-                        <img src="{{asset('default.jfif')}}" alt="Image 1">
-                    @endif
-                    <p>{{$seller->name}}</p>
-                </div>
+            <div class="image-box">
+                @if($seller->settings && $seller->settings->profile)
+                <a href="{{route('seller.profile' , $user->id)}}"><img
+                        src="{{ asset('sellers-profiles/' . $seller->settings->profile) }}"></a>
+                @else
+                <a href="{{route('seller.profile' , $user->id)}}"><img src="{{asset('default.jfif')}}"
+                        alt="Image 1"></a>
+                @endif
+                <p>{{$seller->name}}</p>
+            </div>
             @endforeach
         </div>
     </section>
@@ -58,10 +72,12 @@
         <div class="banner-container">
             <div class="reserve-content">
                 <h1>Exclusive Celebrity Apparel & Accessories At Your Fingertips</h1>
-                <p>The goal is to create a influencer-to-peer fashion marketplace called Emulate. This platform
-                    bridges the gap between fans and their favorite celebrities by allowing fans to rent or buy
-                    iconic clothing and items used by celebrities at significant moments in time.</p>
-                <a href="#">RESERVE NOW</a>
+                @auth
+                <button class="cta-btn rounded-btn"
+                    onclick="window.location.href='{{ route('products.index') }}'">Purchase Now</button>
+                @else
+                <button class="cta-btn rounded-btn" onclick="openPopup('signin')">Purchase Now</button>
+                @endauth
             </div>
         </div>
     </section>
@@ -72,19 +88,28 @@
             @foreach($items as $item)
             <div class="product-item">
                 @php
-                    $firstImage = $item->itemImages->first();
+                $firstImage = $item->itemImages->first();
                 @endphp
 
                 @if($firstImage)
-                    <a href="{{route('product.details' , $item->id)}}"><img src="{{ asset('item-images/' . $firstImage->image_name) }}" style="height: 90%;width: 100%;"class="product-image"></a>
+                <a href="{{route('product.details' , $item->id)}}"><img
+                        src="{{ asset('item-images/' . $firstImage->image_name) }}" style="height: 90%;width: 100%;"
+                        class="product-image"></a>
                 @else
-                    <a href="href="{{route('product.details' , $item->id)}}""><img src="{{asset('default.jfif')}}" style="height: 90%;width: 100%;"class="product-image"></a>
+                <a href="href=" {{route('product.details' , $item->id)}}""><img src="{{asset('default.jfif')}}"
+                        style="height: 90%;width: 100%;" class="product-image"></a>
                 @endif
-                    <a href="{{route('product.details' , $item->id)}}"><p class="product-name">{{$item->name}}</p></a>
+                <a href="{{route('product.details' , $item->id)}}">
+                    <p class="product-name">{{$item->name}}</p>
+                </a>
                 @if($item->item_type == 'for_rent')
-                    <a href="{{route('product.details' , $item->id)}}"><p class="product-price">{{$item->rental_price}}$</p></a>
+                <a href="{{route('product.details' , $item->id)}}">
+                    <p class="product-price">{{$item->rental_price}}$</p>
+                </a>
                 @else
-                    <a href="{{route('product.details' , $item->id)}}"><p class="product-price">{{$item->sale_price}}$</p></a>
+                <a href="{{route('product.details' , $item->id)}}">
+                    <p class="product-price">{{$item->sale_price}}$</p>
+                </a>
                 @endif
             </div>
             @endforeach

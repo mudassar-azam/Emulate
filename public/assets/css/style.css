@@ -270,9 +270,6 @@ a {
   width: 100%;
   max-width: 1200px;
   min-height: 500px;
-  background-image: url('https://via.placeholder.com/1200x400');
-  background-size: cover;
-  background-position: center;
   display: flex;
   justify-content: center;
   align-items: center;

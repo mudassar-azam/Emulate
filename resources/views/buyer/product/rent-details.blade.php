@@ -201,10 +201,7 @@
             </div>
 
             <label for="size">Size</label>
-            <select class="size" name="size">
-                <option disabled>select size</option>
-                <option value="{{$product->size}}">{{$product->size}}</option>
-            </select>
+            <input type="text" name="size" value="{{$item->size}}" readonly>
 
             <button class="apply-btn" onclick="applyRent()">APPLY</button>
         </div>
@@ -222,8 +219,7 @@ function goBack() {
 }
 </script>
 
-
-
+<link rel='stylesheet' href='https://sachinchoolur.github.io/lightslider/dist/css/lightslider.css'>
 <script src='https://sachinchoolur.github.io/lightslider/dist/js/lightslider.js'></script>
 <script>
 $('#lightSlider').lightSlider({
@@ -381,13 +377,7 @@ $('#lightSlider').lightSlider({
 
         axios.post('/orders', data)
             .then(response => {
-                toastr.success('Your order has confirmed ,Proceed to checkout', 'Success', {
-                    positionClass: 'toast-top-right',
-                    timeOut: 3000
-                });
-                setTimeout(function() {
-                    location.reload();
-                }, 1000);
+                window.location.href = "{{ route('buyer.checkout') }}";
             })
             .catch(error => {
                 console.error('There was an error!', error);

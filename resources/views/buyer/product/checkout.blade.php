@@ -56,12 +56,6 @@
                     <li><a href="{{route('product.rent')}}">Rental</a></li>
                     <li><a href="{{route('product.buy')}}">Purchase</a></li>
                     <li><a href="#">About Us</a></li>
-                    @auth
-                    @if(auth()->user()->role === 'buyer')
-                    <li><a href="{{ route('buyer.checkout') }}">Check Out</a></li>
-                    @endif
-                    @endauth
-
                     <li><i class="fa-solid fa-magnifying-glass"></i></li>
                 </ul>
             </nav>

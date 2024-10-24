@@ -14,8 +14,7 @@ return new class extends Migration
             $table->string('firstname')->nullable();
             $table->string('lastname')->nullable();
             $table->date('dob')->nullable(); 
-            $table->string('number')->nullable(); 
-            $table->string('zipcode')->nullable();
+            $table->string('gender')->nullable(); 
             $table->unsignedBigInteger('user_id'); 
             $table->timestamps();
 

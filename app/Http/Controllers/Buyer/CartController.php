@@ -24,6 +24,10 @@ class CartController extends Controller
     {
         $product_id = $request->product_id;
         $product = Item::find($product_id);
+
+        if($product->stock == 0){
+            return response()->json(['status' => 'out_of_stock', 'message' => 'Product is out of stock!']);
+        }
         $user_id = Auth::user()->id;
     
         $cart = Cart::where('user_id', $user_id)->where('product_id', $product_id)->first();
@@ -68,14 +72,7 @@ class CartController extends Controller
             return response()->json(['success' => false, 'message' => 'No items present in the cart.']);
         }
     
-        $outOfStockItems = [];
-        $confirmedItems = [];
-    
         foreach ($carts as $cart) {
-            if ($cart->product->stock == 0) {
-                $outOfStockItems[] = $cart->product->name;
-                continue;
-            }
     
             Order::create([
                 'user_id' => Auth::user()->id,
@@ -85,33 +82,12 @@ class CartController extends Controller
                 'payment_status' => 'due',
                 'total_payment' => $cart->product->sale_price,
             ]);
-    
-            $confirmedItems[] = $cart->product->name;
         }
     
-        foreach ($carts as $cart) {
-            if (!in_array($cart->product->name, $outOfStockItems)) {
-                $cart->delete();
-            }
+        foreach($carts as $cart) {
+            $cart->delete();
         }
     
-        $responseMessage = '';
-        if (!empty($confirmedItems)) {
-            $responseMessage = 'Order Confirmed Successfully!';
-        }
-        if (!empty($outOfStockItems)) {
-            if (!empty($confirmedItems)) {
-                $responseMessage .= ' However, the following items are out of stock: ' . implode(', ', $outOfStockItems);
-            } else {
-                $responseMessage = 'All items are out of stock: ' . implode(', ', $outOfStockItems);
-            }
-        }
-    
-        return response()->json([
-            'success' => !empty($confirmedItems),
-            'message' => $responseMessage,
-            'confirmed_items' => $confirmedItems,
-            'out_of_stock_items' => $outOfStockItems,
-        ]);
+        return response()->json(['success' => true, 'message' => 'Order created successfully!']);
     }    
 }

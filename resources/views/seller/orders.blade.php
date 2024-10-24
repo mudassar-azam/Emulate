@@ -12,21 +12,24 @@
         </div>
         <h1 style="flex:1;text-align:center;">Order</h1>
     </div>
+    @php 
+        $total = 0;
+    @endphp
     <div class="order-page">
         <!-- Order items list -->
         <div class="order-items">
             @foreach($orders as $order)
             <div class="order-item">
-                <div class="order-details">
+                <div class="order-details" style="gap:10px">
                     @php
                     $firstImage = $order->product->itemImages->first();
                     $total = $total + $order->total_payment;
                     @endphp
 
                     @if($firstImage)
-                    <img src="{{ asset('item-images/' . $firstImage->image_name) }}">
+                    <img style="height: 100px; width: 100px;" src="{{ asset('item-images/' . $firstImage->image_name) }}">
                     @else
-                    <img src="{{asset('default.jfif')}}" alt="Product Image">
+                    <img style="height: 100px; width: 100px;" src="{{asset('default.jfif')}}" alt="Product Image">
                     @endif
                     <div class="order-description">
                         <p class="item-name">{{$order->product->name}}</p>

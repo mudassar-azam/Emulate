@@ -13,8 +13,7 @@ class BuyerSettings extends Model
         'firstname',
         'lastname',
         'dob',
-        'number',
-        'zipcode',
+        'gender',
         'user_id'
     ];
 }

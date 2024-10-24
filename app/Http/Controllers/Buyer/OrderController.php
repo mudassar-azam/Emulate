@@ -73,12 +73,6 @@ class OrderController extends Controller
     
         $product = Item::find($request->input('product_id'));
     
-        $existingOrder = Order::where('product_id', $request->input('product_id'))->first();
-    
-        if ($existingOrder) {
-            return response()->json(['success' => false], 400);
-        }
-    
         $data = $request->all();
         $data['user_id'] = Auth::user()->id;
         $data['product_id'] = $request->input('product_id');

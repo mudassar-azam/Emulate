@@ -195,12 +195,10 @@ td img {
                                 <div class="form-group id-013">
                                     <input type="date" name="dob" class="form-input id-014" placeholder="DATE OF BIRTH"
                                         value="{{ $settings ? $settings->dob : '' }}">
-                                    <input type="text" name="zipcode" class="form-input id-015" placeholder="ZIP CODE"
-                                        value="{{ $settings ? $settings->zipcode : '' }}">
+                                    <input type="text" name="gender" class="form-input id-015" placeholder="GENDER"
+                                        value="{{ $settings ? $settings->gender : '' }}">
                                 </div>
                                 <div class="form-group id-016">
-                                    <input type="tel" name="number" class="form-input id-017" placeholder="PHONE NUMBER"
-                                        value="{{ $settings ? $settings->number : '' }}">
                                     <input type="email" name="email" class="form-input id-017" placeholder="Email"
                                         value="{{ Auth::user()->email }}">
                                 </div>
