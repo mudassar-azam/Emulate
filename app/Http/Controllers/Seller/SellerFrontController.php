@@ -37,8 +37,15 @@ class SellerFrontController extends Controller
         $user = User::find($id);
         $items = Item::where('user_id' , $id)->get();
         $posts = Post::where('user_id' , $id)->get();
-        $subscriber = Subscriber::where('subscriber_id' , Auth::user()->id)->where('seller_id' , $user->id)->first();
-        return view('seller.seller-profile',compact('user','items','posts','subscriber'));
+        if (Auth::check()) {
+            $subscriber = Subscriber::where('subscriber_id', Auth::user()->id)
+                ->where('seller_id', $user->id)
+                ->first();
+            
+            return view('seller.seller-profile', compact('user', 'items', 'posts', 'subscriber'));
+        } else {
+            return view('seller.seller-profile', compact('user', 'items', 'posts'));
+        }
 
     }
 

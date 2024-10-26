@@ -41,15 +41,17 @@
                     </div>
                 </div>
                 <div class="social-icons">
-                    @if($subscriber != null)
-                        <button type="button" class="subscribe-btn">SUBSCRIBED</button>
-                    @else
-                        <form  action="{{route('seller.subscribe')}}" method="post">
-                            @csrf
-                            <input type="hidden" name="seller_id" value="{{$user->id}}">
-                            <button type="submit" class="subscribe-btn">SUBSCRIBE</button>
-                        </form>
-                    @endif    
+                    @auth
+                        @if($subscriber != null)
+                            <button type="button" class="subscribe-btn">SUBSCRIBED</button>
+                        @else
+                            <form  action="{{route('seller.subscribe')}}" method="post">
+                                @csrf
+                                <input type="hidden" name="seller_id" value="{{$user->id}}">
+                                <button type="submit" class="subscribe-btn">SUBSCRIBE</button>
+                            </form>
+                        @endif    
+                    @endauth    
                     @if($user->settings && $user->settings->facebook_link)
                     <a href="{{$user->settings->facebook_link}}" target="_blank"><i
                             class="fa-brands fa-facebook"></i></a>

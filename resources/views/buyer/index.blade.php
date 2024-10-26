@@ -56,10 +56,10 @@
             @foreach($sellers as $seller)
             <div class="image-box">
                 @if($seller->settings && $seller->settings->profile)
-                <a href="{{route('seller.profile' , $user->id)}}"><img
+                <a href="{{route('seller.profile' , $seller->id)}}"><img
                         src="{{ asset('sellers-profiles/' . $seller->settings->profile) }}"></a>
                 @else
-                <a href="{{route('seller.profile' , $user->id)}}"><img src="{{asset('default.jfif')}}"
+                <a href="{{route('seller.profile' , $seller->id)}}"><img src="{{asset('default.jfif')}}"
                         alt="Image 1"></a>
                 @endif
                 <p>{{$seller->name}}</p>

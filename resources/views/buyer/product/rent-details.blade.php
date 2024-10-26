@@ -201,7 +201,7 @@
             </div>
 
             <label for="size">Size</label>
-            <input type="text" name="size" value="{{$item->size}}" readonly>
+            <input class="size" type="text" name="size" value="{{$item->size}}" readonly>
 
             <button class="apply-btn" onclick="applyRent()">APPLY</button>
         </div>

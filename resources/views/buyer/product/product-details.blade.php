@@ -241,7 +241,7 @@
                 <input type="text" id="zip" name="zip" placeholder="Enter ZIP Code">
 
                 <label for="size">Size</label>
-                <input type="text" name="size" value="{{$item->size}}" readonly>
+                <input class="size" type="text" name="size" value="{{$item->size}}" readonly>
 
                 <input type="hidden" name="product_id" value="{{$item->id}}">
 
