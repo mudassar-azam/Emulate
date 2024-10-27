@@ -20,6 +20,8 @@ class Item extends Model
         'item_type',
         'stock',
         'description',
+        'start_date',
+        'end_date',
     ];
 
     public function itemImages()

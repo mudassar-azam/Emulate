@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('item_type');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category_id');
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->integer('stock');
             $table->text('description');
             $table->timestamps();

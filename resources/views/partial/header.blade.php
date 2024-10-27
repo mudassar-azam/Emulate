@@ -25,7 +25,7 @@
         <nav>
             <ul class="nav-links">
                 <li><a href="{{route('products.index')}}">Products</a></li>
-                <li><a href="#">Celebrities</a></li>
+                <li><a href="#">Creaters</a></li>
                 <li><a href="{{route('product.rent')}}">Rental</a></li>
                 <li><a href="{{route('product.buy')}}">Purchase</a></li>
                 <li><a href="#">About Us</a></li>
@@ -35,6 +35,9 @@
     </div>
     <div class="header-buttons">
         @auth
+            @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')
+                <button style="background: black;border: none;color: white; cursor:pointer;" onclick="window.location.href='{{ route('seller.front') }}'"><i class="fas fa-home"></i></button>
+            @endif  
             <button class="cart-btn" onclick="openPopup('wishlist')"><i class="fa-regular fa-heart"></i></button>
             <button class="cart-btn" id="cartButton"><i class="fa-solid fa-bag-shopping"></i></button>
             @if(auth()->user()->role == 'buyer')
@@ -229,7 +232,7 @@
     <div class="logo">Emulate</div>
     <nav>
         <ul class="nav-links">
-            <li><a href="#">Celebrities</a></li>
+            <li><a href="#">Creaters</a></li>
             <li><a href="#">Rental</a></li>
             <li><a href="#">Purchase</a></li>
             <li><a href="#">About Us</a></li>

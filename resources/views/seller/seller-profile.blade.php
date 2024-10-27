@@ -33,7 +33,7 @@
                     @if($user->settings && $user->settings->introduction)
                     <p>{{ $user->settings->introduction }}</p>
                     @else
-                    <p>There is no introduction of this celebrity present yet.</p>
+                    <p>There is no introduction of this creater present yet.</p>
                     @endif
                     <div class="subscriber-count">
                         <h2>{{$user->subscribers}}</h2>

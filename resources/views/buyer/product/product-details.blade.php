@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('content')
 <main class="main">
+    <div id="alert-danger" class="alert alert-danger" style="display: none;">
+        <ul id="error-list"></ul>
+    </div>
     <div id="alert-success" class="alert alert-success" style="display: none;"></div>
     <style>
     .back-btn {
@@ -42,7 +45,12 @@
                     @else
                         <a href="{{route('seller.profile' , $item->user->id)}}"><img src="{{asset('default.jfif')}}" class="profile-img"></a>
                     @endif
-                        <a href="{{route('seller.profile' , $item->user->id)}}"><span class="seller-name">{{$item->user->name}}</span></a>
+                        <div style="display:flex;width: 50%;justify-content: space-between;align-items:center;">
+                            <a href="{{route('seller.profile' , $item->user->id)}}"><span class="seller-name">{{$item->user->name}}</span></a>
+                            @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')
+                                <button onclick="openPopup('addnewitem')"><i class="fa-regular fa-pen-to-square"></i></button>
+                            @endif    
+                        </div>
                 </div>
                 <div class="d-flex justify-between align-center">
                     <h2>{{$item->name}}</h2>
@@ -84,13 +92,13 @@
 
                 <div class="product-pricing">
                     @if($item->item_type == 'for_rent')
-                    <p><strong>Rent Price Per Day : {{$item->rental_price}}$</strong></p>
+                    <p><strong>Rent Price Per Day : ${{$item->rental_price}}</strong></p>
                     @else
-                    <p class="retail">Sale Price : {{$item->sale_price}}$</p>
+                    <p class="retail">Sale Price : ${{$item->sale_price}}</p>
                     @endif
                 </div>
                 @auth
-                    <div class="product-actions">
+                    <div class="product-actions" style="gap:2em">
                         @if($item->item_type == 'for_rent')
                             @if($item->stock > 0)
                                 <button class="rent-btn" onclick="openPopup('rent')">Rent</button>
@@ -99,7 +107,11 @@
                             @endif
                         @else
                             @if($item->stock > 0)
-                                <button class="buy-now-btn" onclick="openPopup('buy')">Buy Now</button>
+                                <form action="{{route('buyer.order.now')}}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{$item->id}}">
+                                    <button style="width:100%" class="buy-now-btn" type="submit">Buy Now</button>
+                                </form>
                             @else
                                 <button class="buy-now-btn">Out Of Stock</button>
                             @endif
@@ -157,11 +169,11 @@
                 </a>
                 @if($product->item_type == 'for_rental')
                 <a href="{{route('product.details' , $product->id)}}">
-                    <p class="product-price">{{$product->rental_price}}$</p>
+                    <p class="product-price">${{$product->rental_price}}</p>
                 </a>
                 @else
                 <a href="{{route('product.details' , $product->id)}}">
-                    <p class="product-price">{{$product->sale_price}}$</p>
+                    <p class="product-price">${{$product->sale_price}}</p>
                 </a>
                 @endif
             </div>
@@ -174,6 +186,76 @@
     </section>
 </main>
 
+<div id="addnewitem-popup" class="popup">
+    <div class="container">
+        <div class="d-flex justify-between"
+            style="margin-bottom:40px;border-bottom:1px solid lightgray;padding:0.8rem 1rem;">
+            <h2>Update Item</h2>
+            <div><span style="font-weight: bold; cursor:pointer;" onclick="closePopup('addnewitem')">X</span></div>
+        </div>
+        <div class="sub-container">
+            <form id="createItem" action="{{ route('item.update', $item->id) }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name"  value="{{ $item->name }}">
+
+                <label for="images">Photo</label>
+                <input type="file" name="images[]" id="images" multiple="multiple">
+
+                <label for="category">Select Category</label>
+                <select name="category_id" id="category_id">
+                    <option selected disabled>Select Item</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" {{ $item->category_id == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+                <label for="item_type">Item Type</label>
+                <select id="item_type" name="item_type" onchange="toggleFields()">
+                    <option selected disabled>Select Type</option>
+                    <option value="for_sale" {{ $item->item_type == 'for_sale' ? 'selected' : '' }}>For Sale</option>
+                    <option value="for_rent" {{ $item->item_type == 'for_rent' ? 'selected' : '' }}>For Rent</option>
+                </select>
+
+                <div id="for-sale" style="display: {{ $item->item_type == 'for_sale' ? 'block' : 'none' }}">
+                    <label for="sale_price">Sale Price</label>
+                    <input type="number" id="sale_price" name="sale_price" value="{{ $item->sale_price }}" placeholder="Sale Price">
+                </div>
+
+                <div id="for-rent" style="display: {{ $item->item_type == 'for_rent' ? 'block' : 'none' }}">
+                    <label for="rental_price">Rental Price Per Day</label>
+                    <input type="number" id="rental_price" name="rental_price" value="{{ $item->rental_price }}" placeholder="Rental Price">
+                    <label for="start_date">Start Date</label>
+                    <input style="width: 100%;padding: 6px;margin-bottom: 20px;border: 1px solid #ddd;border-radius: 5px;" type="date" id="start_date" name="start_date" value="{{ $item->start_date }}">
+                    <label for="end_date">End Date</label>
+                    <input style="width: 100%;padding: 6px;margin-bottom: 20px;border: 1px solid #ddd;border-radius: 5px;" type="date" id="end_date" name="end_date" value="{{ $item->end_date }}">
+                </div>
+
+                <div id="for-stock" >
+                    <label for="stock">Stock</label>
+                    <input type="number" id="stock" name="stock" value="{{ $item->stock }}">
+                </div>
+
+                <div id="description" >
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description" value="{{ $item->description }}">
+                </div>
+
+                <label for="size">Size</label>
+                <select id="size" name="size">
+                    <option value="L" {{ $item->size == 'L' ? 'selected' : '' }}>L</option>
+                    <option value="M" {{ $item->size == 'M' ? 'selected' : '' }}>M</option>
+                    <option value="S" {{ $item->size == 'S' ? 'selected' : '' }}>S</option>
+                </select>
+
+                <button type="submit" class="apply-btn">Update Item</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- Rent popup -->
 <div id="rent-popup" class="popup">
     <div class="container">
@@ -183,9 +265,6 @@
             <a href="#">Need help?</a>
         </div>
         <div class="sub-container">
-
-            <label for="zip">Delivery ZIP Code</label>
-            <input type="text" class="zip" name="zip" placeholder="Enter ZIP Code">
 
             <label for="lease-term">Lease Term</label>
             <div class="lease-term">
@@ -226,33 +305,6 @@
     </div>
 </div>
 
-<!-- Buy popup -->
-<div id="buy-popup" class="popup">
-    <div class="container">
-        <div class="d-flex justify-between"
-            style="margin-bottom:40px;border-bottom:1px solid lightgray;padding:0.8rem 1rem;">
-            <h2>Buy Now</h2>
-            <a href="#">Need help?</a>
-        </div>
-        <div class="sub-container">
-            <form id="buyNowForm" action="{{route('buyer.order.now')}}" method="post">
-                @csrf
-                <label for="zip">Delivery ZIP Code</label>
-                <input type="text" id="zip" name="zip" placeholder="Enter ZIP Code">
-
-                <label for="size">Size</label>
-                <input class="size" type="text" name="size" value="{{$item->size}}" readonly>
-
-                <input type="hidden" name="product_id" value="{{$item->id}}">
-
-                <button type="submit" class="apply-btn">Order</button>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-
 @endsection
 @push('scripts')
 
@@ -262,7 +314,22 @@ function goBack() {
     window.history.back();
 }
 </script>
+<script>
+    function toggleFields() {
+        const itemType = document.getElementById('item_type').value;
+        const forSaleDiv = document.getElementById('for-sale');
+        const forRentDiv = document.getElementById('for-rent');
 
+        forSaleDiv.style.display = 'none';
+        forRentDiv.style.display = 'none';
+
+        if (itemType === 'for_sale') {
+            forSaleDiv.style.display = 'block';
+        } else if (itemType === 'for_rent') {
+            forRentDiv.style.display = 'block';
+        }
+    }
+</script>
 
 <link rel='stylesheet' href='https://sachinchoolur.github.io/lightslider/dist/css/lightslider.css'>
 <script src='https://sachinchoolur.github.io/lightslider/dist/js/lightslider.js'></script>
@@ -360,18 +427,10 @@ $('#lightSlider').lightSlider({
     });
 
     function applyRent() {
-        const zipCode = document.querySelector('.zip').value;
         const leaseTerm = document.querySelector('.lease-term button.active').textContent;
         const selectedButton = document.querySelector('.calendar-grid button.range');
         const size = document.querySelector('.size').value;
 
-        if (!zipCode) {
-            toastr.error('Enter Zip Code', 'Success', {
-                positionClass: 'toast-top-right',
-                timeOut: 1000
-            });
-            return;
-        }
 
         if (!selectedButton) {
             toastr.error('Select Date', 'Success', {
@@ -412,7 +471,6 @@ $('#lightSlider').lightSlider({
         }
 
         const data = {
-            zip_code: zipCode,
             lease_term: leaseTerm,
             start_date: startDate,
             end_date: endDate,
@@ -432,50 +490,101 @@ $('#lightSlider').lightSlider({
 
     updateCalendar();
 </script>
-
-<!-- for buy now  -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var myForm = document.getElementById('buyNowForm');
-    var errorAlert = document.getElementById('alert-danger');
-    var errorList = document.getElementById('error-list');
-    var successAlert = document.getElementById('alert-success');
-    myForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        var formElements = myForm.querySelectorAll('input, select, textarea');
-        formElements.forEach(function(element) {
-            element.style.border = '';
-            if (element.type === 'file') {
-                element.classList.remove('file-not-valid');
+    document.addEventListener('DOMContentLoaded', function() {
+        var myForm = document.getElementById('createItem');
+        var errorAlert = document.getElementById('alert-danger');
+        var errorList = document.getElementById('error-list');
+        var successAlert = document.getElementById('alert-success');
+        myForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formElements = myForm.querySelectorAll('input, select, textarea');
+            formElements.forEach(function(element) {
+                element.style.border = '';
+                if (element.type === 'file') {
+                    element.classList.remove('file-not-valid');
+                }
+            });
+            var formData = new FormData(myForm);
+            fetch(myForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        errorAlert.style.display = 'none';
+                        successAlert.textContent = data.message;
+                        successAlert.style.display = 'block';
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                        setTimeout(function() {
+                            successAlert.style.display = 'none';
+                        }, 4000);
+                        location.reload();
+                    } else {
+                        errorList.innerHTML = '';
+                        if (data.errors.length > 0) {
+                            var li = document.createElement('li');
+                            li.textContent = data.errors[0].message;
+                            errorList.appendChild(li);
+                            errorAlert.style.display = 'block';
+                            successAlert.style.display = 'none';
+                            var firstErrorField;
+                            data.errors.forEach(function(error, index) {
+                                var errorField = myForm.querySelector(
+                                    `[name="${error.field}"]`);
+                                if (errorField) {
+                                    errorField.style.border = '1px solid red';
+                                    if (errorField.type === 'file') {
+                                        errorField.classList.add('file-not-valid');
+                                    }
+                                    if (index === 0) {
+                                        firstErrorField = errorField;
+                                    }
+                                }
+                            });
+
+                            // Focus on the first invalid input field
+                            if (firstErrorField) {
+                                firstErrorField.focus();
+                            }
+                            setTimeout(function() {
+                                errorAlert.style.display = 'none';
+                            }, 3000);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+        myForm.addEventListener('input', function(event) {
+            if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+                if (event.target.value.trim() !== '') {
+                    event.target.style.border = '';
+                    if (event.target.type === 'file') {
+                        event.target.classList.remove('file-not-valid');
+                    }
+                }
             }
         });
-        var formData = new FormData(myForm);
-        fetch(myForm.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                        'content')
+        myForm.addEventListener('change', function(event) {
+            if (event.target.tagName === 'SELECT') {
+                if (event.target.value.trim() !== '') {
+                    event.target.style.border = '';
+                    if (event.target.type === 'file') {
+                        event.target.classList.remove('file-not-valid');
+                    }
                 }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = "{{ route('buyer.checkout') }}";
-                } else {
-                    toastr.error('Already Sold', 'Success', {
-                        positionClass: 'toast-top-right',
-                        timeOut: 3000
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+            }
+        });
     });
-});
 </script>
-
-
-
 @endpush

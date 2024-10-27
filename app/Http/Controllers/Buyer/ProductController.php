@@ -21,7 +21,8 @@ class ProductController extends Controller
     public function details($id){
         $item = Item::with('itemImages')->findOrFail($id);
         $products = Item::all();
-        return view('buyer.product.product-details',compact('products','item'));
+        $categories = Category::all();
+        return view('buyer.product.product-details',compact('products','categories','item'));
     }
 
     public function rent(){
@@ -41,13 +42,15 @@ class ProductController extends Controller
     public function rentDetails($id){
         $item = Item::with('itemImages')->findOrFail($id);
         $products = Item::where('item_type' , 'for_rent')->get();
-        return view('buyer.product.rent-details',compact('products','item'));
+        $categories = Category::all();
+        return view('buyer.product.rent-details',compact('products','categories','item'));
     }
 
     public function buyDetails($id){
         $item = Item::with('itemImages')->findOrFail($id);
         $products = Item::where('item_type' , 'for_sale')->get();
-        return view('buyer.product.buy-details',compact('products','item'));
+        $categories = Category::all();
+        return view('buyer.product.buy-details',compact('products','categories','item'));
     }
 
     public function wishlistProductDetails($name) {
@@ -55,4 +58,6 @@ class ProductController extends Controller
         $products = Item::all();
         return view('buyer.product.product-details', compact('products', 'item'));
     }    
+
+    
 }

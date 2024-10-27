@@ -15,7 +15,6 @@ class OrderController extends Controller
         try {
             
             $validatedData = $request->validate([
-                'zip_code' => 'required|string|max:10',
                 'lease_term' => 'required|string',
                 'start_date' => 'required|string',
                 'end_date' => 'required|string',
@@ -33,7 +32,6 @@ class OrderController extends Controller
                 'user_id' => auth()->id(), 
                 'product_id' => $validatedData['product_id'],
                 'product_owner_id' => $product->user_id,
-                'zip_code' => $validatedData['zip_code'],
                 'lease_term' => $validatedData['lease_term'],
                 'start_date' => $validatedData['start_date'], 
                 'end_date' => $validatedData['end_date'],
@@ -55,22 +53,6 @@ class OrderController extends Controller
 
     public function buyNow(Request $request)
     {
-        $rules = [
-            'size' => 'required',
-            'zip' => 'required',
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            $errors = [];
-            foreach ($validator->errors()->getMessages() as $field => $messages) {
-                $errors[] = [
-                    'field' => $field,
-                    'message' => $messages[0]
-                ];
-            }
-            return response()->json(['success' => false, 'errors' => $errors], 422);
-        }
-    
         $product = Item::find($request->input('product_id'));
     
         $data = $request->all();
@@ -83,7 +65,7 @@ class OrderController extends Controller
     
         $order = Order::create($data);
     
-        return response()->json(['success' => true, 'message' => 'Order created successfully, Proceed to checkout!']);
+        return redirect()->route('buyer.checkout');
     }
     
 

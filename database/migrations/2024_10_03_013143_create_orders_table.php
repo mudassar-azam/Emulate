@@ -15,7 +15,6 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('items');
             $table->foreignId('product_owner_id')->constrained('users');
             $table->string('lease_term')->nullable();
-            $table->string('zip_code')->nullable();
             $table->string('start_date')->nullable(); 
             $table->string('end_date')->nullable();   
             $table->string('type');

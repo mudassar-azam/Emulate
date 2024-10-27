@@ -52,7 +52,7 @@
             <nav>
                 <ul class="nav-links">
                     <li><a href="{{route('products.index')}}">Products</a></li>
-                    <li><a href="#">Celebrities</a></li>
+                    <li><a href="#">Creaters</a></li>
                     <li><a href="{{route('product.rent')}}">Rental</a></li>
                     <li><a href="{{route('product.buy')}}">Purchase</a></li>
                     <li><a href="#">About Us</a></li>

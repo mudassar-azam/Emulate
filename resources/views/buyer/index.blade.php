@@ -5,7 +5,7 @@
     <!-- Banner Section -->
     <section class="banner">
         <div class="banner-content">
-            <h1>Rent or Own Iconic outfits from your favorite celebrities</h1>
+            <h1>Rent or Own Iconic outfits from your favorite creaters</h1>
             @auth
             <button class="cta-btn rounded-btn" onclick="window.location.href='{{ route('products.index') }}'">Purchase
                 Now</button>
@@ -71,7 +71,7 @@
     <section class="reserve-banner-section">
         <div class="banner-container">
             <div class="reserve-content">
-                <h1>Exclusive Celebrity Apparel & Accessories At Your Fingertips</h1>
+                <h1>Exclusive Creaters Apparel & Accessories At Your Fingertips</h1>
                 @auth
                 <button class="cta-btn rounded-btn"
                     onclick="window.location.href='{{ route('products.index') }}'">Purchase Now</button>
@@ -104,11 +104,11 @@
                 </a>
                 @if($item->item_type == 'for_rent')
                 <a href="{{route('product.details' , $item->id)}}">
-                    <p class="product-price">{{$item->rental_price}}$</p>
+                    <p class="product-price">${{$item->rental_price}}</p>
                 </a>
                 @else
                 <a href="{{route('product.details' , $item->id)}}">
-                    <p class="product-price">{{$item->sale_price}}$</p>
+                    <p class="product-price">${{$item->sale_price}}</p>
                 </a>
                 @endif
             </div>

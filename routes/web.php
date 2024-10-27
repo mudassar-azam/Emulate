@@ -31,6 +31,7 @@ Route::group(['middleware' => CheckUserRole::class], function () {
     Route::get('/seller', [SellerFrontController::class, 'index'])->name('seller.front');
     Route::get('/seller-dashboard', [SellerFrontController::class, 'dashboard'])->name('seller.dashboard');
     Route::post('/store-item', [ItemController::class, 'store'])->name('item.store');
+    Route::post('/update-item/{id}', [ItemController::class, 'update'])->name('item.update');
     Route::post('/store-post', [PostController::class, 'store'])->name('post.store');
     Route::post('/update-seller-settings', [SellerSettingsController::class, 'update'])->name('update.seller.settings');
     Route::get('/orders', [SellerFrontController::class, 'order'])->name('seller.orders');

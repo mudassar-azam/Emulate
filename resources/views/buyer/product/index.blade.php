@@ -118,16 +118,6 @@
         </div>
         <div class="product-cards-container" id="productCards">
 
-            <div class="filter-bar">
-                <button class="open-filterbar"><i class="fa-solid fa-arrow-down-wide-short"></i></button>
-                <div class="search-input">
-                    <input type="text" id="customSearchInput" class="search-bar" placeholder="Search..">
-                </div>
-                <div class="result-count" id="resultCount">
-                    {{ count($products) }} results
-                </div>
-            </div>
-
             <div class="selected-filters" id="selectedFilters"></div>
             <div class="product-cards" id="productCards">
                 <div class="product-flex" id="uniqueProductflex">
@@ -152,11 +142,11 @@
                         </a>
                         @if($product->item_type == 'for_rental')
                         <a href="{{route('product.details' , $product->id)}}">
-                            <p class="product-price">{{$product->rental_price}}$</p>
+                            <p class="product-price">${{$product->rental_price}}</p>
                         </a>
                         @else
                         <a href="{{route('product.details' , $product->id)}}">
-                            <p class="product-price">{{$product->sale_price}}$</p>
+                            <p class="product-price">${{$product->sale_price}}</p>
                         </a>
                         @endif
                     </div>
@@ -282,25 +272,5 @@ document.addEventListener('DOMContentLoaded', () => {
         filterSidebar.style.display = 'block';
     });
 });
-</script>
-<script>
-    document.getElementById('customSearchInput').addEventListener('input', function() {
-        const query = this.value.toLowerCase();
-        const productItems = document.querySelectorAll('.product-item');
-        let visibleCount = 0;
-
-        productItems.forEach(function(item) {
-            const productName = item.getAttribute('data-name');
-
-            if (productName.includes(query)) {
-                item.style.display = 'block';
-                visibleCount++;
-            } else {
-                item.style.display = 'none';
-            }
-        });
-
-        document.getElementById('resultCount').textContent = `${visibleCount} results`;
-    });
 </script>
 @endpush

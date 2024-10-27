@@ -19,7 +19,7 @@ class SellerSettingsController extends Controller
         $settings = SellerSettings::where('user_id',$user_id)->first();
         if($settings){
 
-            $settings->introduction = $request->introduction ?? 'There is no introduction of this celebrity present yet.';
+            $settings->introduction = $request->introduction ?? 'There is no introduction of this creater present yet.';
             $settings->facebook_link = (!empty($request->facebook_link) && $request->facebook_link !== 'N/A') ? $request->facebook_link : null;
             $settings->youtube_link = (!empty($request->youtube_link) && $request->youtube_link !== 'N/A') ? $request->youtube_link : null;
             $settings->instagram_link = (!empty($request->instagram_link) && $request->instagram_link !== 'N/A') ? $request->instagram_link : null;
@@ -50,8 +50,7 @@ class SellerSettingsController extends Controller
         }else{
 
             $settings = new SellerSettings();
-            $settings->introduction = $request->introduction ?? 'There is no introduction of this celebrity present yet.';
-            $settings->introduction = $request->introduction ?? 'There is no introduction of this celebrity present yet.';
+            $settings->introduction = $request->introduction ?? 'There is no introduction of this creater present yet.';
             $settings->facebook_link = (!empty($request->facebook_link) && $request->facebook_link !== 'N/A') ? $request->facebook_link : null;
             $settings->youtube_link = (!empty($request->youtube_link) && $request->youtube_link !== 'N/A') ? $request->youtube_link : null;
             $settings->instagram_link = (!empty($request->instagram_link) && $request->instagram_link !== 'N/A') ? $request->instagram_link : null;

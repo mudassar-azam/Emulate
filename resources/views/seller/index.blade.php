@@ -41,7 +41,7 @@
                     @if($user->settings && $user->settings->introduction)
                     <p>{{ $user->settings->introduction }}</p>
                     @else
-                    <p>There is no introduction of this celebrity present yet.</p>
+                    <p>There is no introduction of this creater present yet.</p>
                     @endif
                     <div class="subscriber-count">
                         <h2>{{$user->subscribers}}</h2>
@@ -90,16 +90,16 @@
                             @endphp
 
                             @if($firstImage)
-                            <img style="height: 80%;width: 60%;"
-                                src="{{ asset('item-images/' . $firstImage->image_name) }}" class="product-image">
+                                <a href="{{route('product.details' , $item->id)}}"><img style="height: 80%;width: 60%;"
+                                src="{{ asset('item-images/' . $firstImage->image_name) }}" class="product-image"></a>
                             @else
-                            <img src="{{asset('default.jfif')}}" class="product-image">
+                                <a href="{{route('product.details' , $item->id)}}"><img src="{{asset('default.jfif')}}" class="product-image"></a>
                             @endif
-                            <p class="product-name">{{$item->name}}</p>
+                                <a href="{{route('product.details' , $item->id)}}"><p class="product-name">{{$item->name}}</p></a>
                             @if($item->item_type == 'for_rent')
-                            <p class="product-price">{{$item->rental_price}}$</p>
+                                <a href="{{route('product.details' , $item->id)}}"><p class="product-price">${{$item->rental_price}}</p></a>
                             @else
-                            <p class="product-price">{{$item->sale_price}}$</p>
+                                <a href="{{route('product.details' , $item->id)}}"> <p class="product-price">${{$item->sale_price}}</p></a>
                             @endif
                         </div>
                         @endforeach
@@ -131,9 +131,9 @@
                             <img src="{{asset('default.jfif')}}" class="product-image">
                             @endif
                             @if($post->item->item_type == 'for_rental')
-                                <p class="product-price">{{$post->item->rental_price}}$</p>
+                                <p class="product-price">${{$post->item->rental_price}}</p>
                             @else
-                            <p class="product-price">{{$post->item->sale_price}}$</p>
+                            <p class="product-price">${{$post->item->sale_price}}</p>
                             @endif
                         </div>
                         @endforeach
@@ -170,20 +170,27 @@
                 </select>
 
                 <label for="item_type">Item Type</label>
-                <select id="item_type" name="item_type">
+                <select id="item_type" name="item_type" onchange="toggleFields()">
                     <option selected disabled>Select Type</option>
                     <option value="for_sale">For Sale</option>
                     <option value="for_rent">For Rent</option>
                 </select>
 
-                <div id="for-sale" >
+                <div id="for-sale" style="display: none;">
                     <label for="sale_price">Sale Price</label>
                     <input type="number" id="sale_price" name="sale_price" placeholder="Sale Price">
                 </div>
 
-                <div id="for-rent" >
+                <div id="for-rent" style="display: none;">
                     <label for="rental_price">Rental Price Per Day</label>
                     <input type="number" id="rental_price" name="rental_price" placeholder="Rental Price">
+
+                    <label for="start_date">Start Date</label>
+                    <input style="width: 100%;padding: 6px;margin-bottom: 20px;border: 1px solid #ddd;border-radius: 5px;" type="date" id="start_date" name="start_date" placeholder="Rental Price">
+
+                    <label for="end_date">End Date</label>
+                    <input style="width: 100%;padding: 6px;margin-bottom: 20px;border: 1px solid #ddd;border-radius: 5px;" type="date" id="end_date" name="end_date" placeholder="Rental Price">
+
                 </div>
 
                 <div id="for-stock" >
@@ -196,12 +203,12 @@
                     <input type="text" id="description" name="description" placeholder="Description">
                 </div>
 
-                <label for="size">Fre Backup Size</label>
+                <label for="size">Size</label>
                 <select id="size" name="size">
                     <option selected disabled>Select size</option>
-                    <option value="IT44">IT 44 / US 8</option>
-                    <option value="IT46">IT 46 / US 9</option>
-                    <option value="IT48">IT 48 / US 10</option>
+                    <option value="L">L</option>
+                    <option value="M">M</option>
+                    <option value="S">S</option>
                 </select>
 
                 <button type="submit" class="apply-btn">Add Item</button>
@@ -314,7 +321,22 @@
 @endsection
 
 @push('scripts')
+<script>
+    function toggleFields() {
+        const itemType = document.getElementById('item_type').value;
+        const forSaleDiv = document.getElementById('for-sale');
+        const forRentDiv = document.getElementById('for-rent');
 
+        forSaleDiv.style.display = 'none';
+        forRentDiv.style.display = 'none';
+
+        if (itemType === 'for_sale') {
+            forSaleDiv.style.display = 'block';
+        } else if (itemType === 'for_rent') {
+            forRentDiv.style.display = 'block';
+        }
+    }
+</script>
 <script>
     document.getElementById('customSearchInputSeller').addEventListener('input', function() {
         const query = this.value.toLowerCase();

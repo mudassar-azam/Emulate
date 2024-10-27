@@ -17,7 +17,6 @@ class Order extends Model
         'cart_id',
         'product_id',
         'lease_term',
-        'zip_code',
         'start_date',
         'end_date',
         'type',
