@@ -47,9 +47,11 @@
                     @endif
                         <div style="display:flex;width: 50%;justify-content: space-between;align-items:center;">
                             <a href="{{route('seller.profile' , $item->user->id)}}"><span class="seller-name">{{$item->user->name}}</span></a>
-                            @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')
-                                <button onclick="openPopup('addnewitem')"><i class="fa-regular fa-pen-to-square"></i></button>
-                            @endif    
+                            @auth 
+                                @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')
+                                    <button onclick="openPopup('addnewitem')"><i class="fa-regular fa-pen-to-square"></i></button>
+                                @endif  
+                            @endauth
                         </div>
                 </div>
                 <div class="d-flex justify-between align-center">
