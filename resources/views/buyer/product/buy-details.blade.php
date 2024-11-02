@@ -49,12 +49,20 @@
                     <div style="display:flex;width: 50%;justify-content: space-between;align-items:center;">
                         <a href="{{route('seller.profile' , $item->user->id)}}"><span
                                 class="seller-name">{{$item->user->name}}</span></a>
+<<<<<<< HEAD
                             @auth     
                         @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')
                         <button onclick="openPopup('addnewitem')"><i class="fa-regular fa-pen-to-square"></i></button>
                         @endif
                           @endauth
                         
+=======
+                        @auth
+                            @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')
+                                <button onclick="openPopup('addnewitem')"><i class="fa-regular fa-pen-to-square"></i></button>
+                            @endif
+                        @endauth
+>>>>>>> 2563694ea26ca8c95c0c983979f37f273eb7b17b
                     </div>
                 </div>
                 <div class="d-flex justify-between align-center">
