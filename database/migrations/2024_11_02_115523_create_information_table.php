@@ -8,17 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('wishlists', function (Blueprint $table) {
+        Schema::create('information', function (Blueprint $table) {
             $table->id();
             $table->string('name'); 
-            $table->string('image'); 
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
+            $table->string('email'); 
+            $table->string('password');
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
-    
+
     public function down(): void
     {
-        Schema::dropIfExists('wishlists');
+        Schema::dropIfExists('information');
     }
 };

@@ -74,7 +74,7 @@
         <li><a href="{{route('product.rent')}}">Rental</a></li>
         <li><a href="{{route('product.buy')}}">Purchase</a></li>
         <li><a href="#">About Us</a></li>
-        <li><button style="background: none;color: white;border: none;" onclick="openPopup('signin')">Interested in selling?</button></li>
+        <li><button style="background: none;color: white;border: none;" onclick="openPopup('addnewitem')">Interested in selling?</button></li>
     </ul>
 
     <div class="footer-social">
@@ -89,3 +89,31 @@
     <p>&copy; 2024 Emulate. All rights reserved.</p>
   </div>
 </footer>
+
+<div id="addnewitem-popup" class="popup">
+    <div class="container">
+        <div class="d-flex justify-between"
+            style="border-bottom:1px solid lightgray;padding:0.8rem 1rem;">
+            <h2>Add Information</h2>
+            <div><span style="font-weight: bold; cursor:pointer;" onclick="closePopup('addnewitem')">X</span></div>
+        </div>
+        <div class="sub-container">
+            <form id="createItem" action="{{ route('information.add') }}" method="post" >
+                @csrf
+
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" placeholder="Name" required>
+
+                <label for="email">Email</label>
+                <input style="width: 100%;padding: 6px;margin-bottom: 20px;border: 1px solid #ddd;border-radius: 5px;" type="email" name="email" id="email" placeholder="Email" required>
+
+
+                <label for="password">Password</label>
+                <input style="width: 100%;padding: 6px;margin-bottom: 20px;border: 1px solid #ddd;border-radius: 5px;" type="password" name="password" id="password" placeholder="Password" required>
+                <span style="margin:10px;">You have to wait for approval after that you can login*</span>
+
+                <button style="margin:10px;" type="submit" class="apply-btn">Upload Information</button>
+            </form>
+        </div>
+    </div>
+</div>

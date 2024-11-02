@@ -45,6 +45,8 @@ Route::group(['middleware' => CheckUserRole::class], function () {
     Route::post('/store-post', [PostController::class, 'store'])->name('post.store');
     Route::post('/update-seller-settings', [SellerSettingsController::class, 'update'])->name('update.seller.settings');
     Route::get('/orders', [SellerFrontController::class, 'order'])->name('seller.orders');
+    Route::get('/requests', [SellerFrontController::class, 'requests'])->name('requests');
+    Route::get('/approve-request/{id}', [SellerFrontController::class, 'approveRequest'])->name('request.approve');
 });
 
 Route::get('/seller-profile/{id}', [SellerFrontController::class, 'profile'])->name('seller.profile');
@@ -69,6 +71,7 @@ Route::post('/subscribe-seller', [SellerFrontController::class, 'subscribe'])->n
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
     Route::post('/order-now', [OrderController::class, 'buyNow'])->name('buyer.order.now');
     Route::delete('/destroyOrder/{id}', [OrderController::class, 'destroyOrder'])->name('order.destroy');
+    Route::post('/add-info', [BuyerFrontController::class, 'addInformation'])->name('information.add');
 
 //buyer/settings
 
@@ -77,7 +80,7 @@ Route::post('/subscribe-seller', [SellerFrontController::class, 'subscribe'])->n
     Route::post('/deleteOrder/{id}', [BuyerSettingsController::class, 'destroy'])->name('buyer.order.destroy');
 
 
-// admin
+// admin/mail
     Route::post('admin/sendEmail', [\App\Http\Controllers\Admin\AdminController::class, 'sendEmail'])->name('admin.sendEmail');
 
 // stripe 

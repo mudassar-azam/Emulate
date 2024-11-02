@@ -32,6 +32,7 @@
                 <button class="subscribe-btn" onclick="openPopup('setting')">Settings</button>
                 @if(Auth::user()->role == 'admin')
                     <button class="subscribe-btn" onclick="openPopup('mail')">Send Email</button>
+                    <button class="subscribe-btn" onclick="window.location.href='{{ route('requests') }}'">View Requests</button>
                 @endif    
             </div>
         </div>

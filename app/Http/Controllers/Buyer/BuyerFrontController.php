@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Seller\Item;
 use App\Models\Buyer\Order;
+use App\Models\Information;
 
 class BuyerFrontController extends Controller
 {
@@ -22,30 +23,27 @@ class BuyerFrontController extends Controller
         return view('buyer.index', compact('users', 'sellers', 'items', 'email', 'showModal'));
     }
    
-    
 
+    public function fetchCeleb(Request $request)
+    {
+      $query = User::where('role', 'seller');
 
+      if ($request->has('search')) {
+          $search = $request->input('search');
+          $query->where(function($q) use ($search) {
+              $q->where('name', 'LIKE', "%$search%")
+                ->orWhere('role', 'LIKE', "%$search%");
+          });
+      }
+      $celebrities = $query->paginate(10);
 
-   public function fetchCeleb(Request $request)
-  {
-    // Start with a query that selects only users with the role 'seller'
-    $query = User::where('role', 'seller');
-
-    // Apply search filter if a search term is provided
-    if ($request->has('search')) {
-        $search = $request->input('search');
-        $query->where(function($q) use ($search) {
-            $q->where('name', 'LIKE', "%$search%")
-              ->orWhere('role', 'LIKE', "%$search%");
-        });
+      return view('buyer.celeb', compact('celebrities'));
     }
 
-    // Paginate the results
-    $celebrities = $query->paginate(10);
-
-    return view('buyer.celeb', compact('celebrities'));
-  }
-
-
+    public function addInformation(Request $request){
+      $data = $request->all();
+      $information = Information::create($data);
+      return redirect()->back();
+    }
 
 }
