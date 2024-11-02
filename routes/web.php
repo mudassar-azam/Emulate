@@ -18,6 +18,16 @@ use App\Http\Middleware\CheckUserRole;
 use App\Http\Controllers\StripeController;
 
 
+use Illuminate\Support\Facades\Artisan;
+
+Route::get('/reset-database', function () {
+    try {
+        Artisan::call('migrate:fresh --seed');
+        return 'Database reset and seeded successfully!';
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
+});
 
 // auth 
     Auth::routes();
@@ -43,6 +53,7 @@ Route::post('/subscribe-seller', [SellerFrontController::class, 'subscribe'])->n
 
 // buyer
     Route::get('/', [BuyerFrontController::class, 'index'])->name('buyer.front');
+    Route::get('/celeb', [BuyerFrontController::class, 'fetchCeleb'])->name('buyer.celeb');
     Route::get('/all-products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/to-buy', [ProductController::class, 'buy'])->name('product.buy');
     Route::get('/to-rent', [ProductController::class, 'rent'])->name('product.rent');

@@ -92,6 +92,16 @@
             </div>
         </div>
         <div class="product-cards-container" id="productCards">
+            <div class="filter-bar">
+              <button class="open-filterbar"><i class="fa-solid fa-arrow-down-wide-short"></i></button>
+              <div class="search-input">
+                 <!--<input type="text" id="customSearchInput" class="search-bar" placeholder="Search..">-->
+              </div>
+              <div class="result-count">
+                162 results
+              </div>
+        
+            </div>
 
             <div class="selected-filters" id="selectedFilters"></div>
             <div class="product-cards" id="productCards">
@@ -100,7 +110,7 @@
                     <div class="product-item" data-category-id="{{$product->category_id}}"
                         data-seller-id="{{$product->user_id}}" data-item-type="{{$product->item_type}}"
                         data-sale-price="{{$product->sale_price}}" data-rental-price="{{$product->rental_price}}"
-                        data-name="{{ strtolower($product->name) }}" style="width: 18em;height: 15em;">
+                        data-name="{{ strtolower($product->name) }}" style="max-width: 18em;max-height: 15em;">
                         @php
                         $firstImage = $product->itemImages->first();
                         @endphp
@@ -241,5 +251,24 @@ document.addEventListener('DOMContentLoaded', () => {
         filterSidebar.style.display = 'block';
     });
 });
+</script>
+
+
+<script>
+  
+const filterSidebar = document.getElementById("filterSidebar");
+const openFilterbar = document.querySelector(".open-filterbar");
+const closeFilterbar = document.getElementById("filter-close-btn");
+
+  // Open filtersidebar and show overlay when cart button is clicked
+  openFilterbar.addEventListener("click", () => {
+    filterSidebar.style.right = "0";
+    overlay.style.display = "block";
+  });
+  closeFilterbar.addEventListener("click", () => {
+    filterSidebar.style.right = "-100%";
+    overlay.style.display = "none";
+  });
+
 </script>
 @endpush

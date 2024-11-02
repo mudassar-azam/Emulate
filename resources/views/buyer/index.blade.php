@@ -5,7 +5,7 @@
     <!-- Banner Section -->
     <section class="banner">
         <div class="banner-content">
-            <h1>Rent or Own Iconic outfits from your favorite creaters</h1>
+            <h1>Rent or Own Iconic outfits from your favorite creators</h1>
             @auth
             <button class="cta-btn rounded-btn" onclick="window.location.href='{{ route('products.index') }}'">Purchase
                 Now</button>
@@ -18,60 +18,34 @@
 
         </div>
     </section>
-
-    <!-- images Section -->
-    <section class="image-section">
-        <div class="container">
-            @foreach($users as $user)
-            <div class="image-card">
-                @if($user->settings && $user->settings->profile)
-                <a href="{{route('seller.profile' , $user->id)}}"><img
-                        src="{{ asset('sellers-profiles/' . $user->settings->profile) }}"></a>
-                @else
-                <a href="{{route('seller.profile' , $user->id)}}"> <img src="{{asset('default.jfif')}}"
-                        alt="Image 1"></a>
-                @endif
-                <div class="overlay2">
-                    <div class="overlay-content">
-                        @if($user->name != null)
-                        <a href="{{route('seller.profile' , $user->id)}}">
-                            <h2>{{$user->name}}</h2>
-                        </a>
-                        @endif
-                        @if($user->settings && $user->settings->introduction)
-                        <a href="{{route('seller.profile' , $user->id)}}">
-                            <p>{{ $user->settings->introduction }}</p>
-                        </a>
-                        @endif
+        
+    <section class="image-section007">
+        @foreach($sellers as $seller)
+        <div class="image-container">
+          @if($seller->settings && $seller->settings->profile)
+            <a href="{{route('seller.profile' , $seller->id)}}">
+                 <img src="{{ asset('sellers-profiles/' . $seller->settings->profile) }}" alt="Sample Image">
+                    <div class="overlay">
+                      <h1>{{$seller->name}}</h1>
+                      <p>{{ $seller->settings->introduction }}</p>
                     </div>
+            </a>
+            @else
+            <a href="{{route('seller.profile' , $seller->id)}}">
+                <img src="{{asset('default.jfif')}}"alt="Image 1">
+                <div class="overlay">
+                  <p></p>
                 </div>
-            </div>
-            @endforeach
+            </a>
+            @endif
         </div>
-    </section>
-
-    <!-- Team pepole image-box banner-->
-    <section class="image-box-banner">
-        <div class="image-box-container">
-            @foreach($sellers as $seller)
-            <div class="image-box">
-                @if($seller->settings && $seller->settings->profile)
-                <a href="{{route('seller.profile' , $seller->id)}}"><img
-                        src="{{ asset('sellers-profiles/' . $seller->settings->profile) }}"></a>
-                @else
-                <a href="{{route('seller.profile' , $seller->id)}}"><img src="{{asset('default.jfif')}}"
-                        alt="Image 1"></a>
-                @endif
-                <p>{{$seller->name}}</p>
-            </div>
-            @endforeach
-        </div>
-    </section>
+        @endforeach
+</section>
 
     <section class="reserve-banner-section">
         <div class="banner-container">
             <div class="reserve-content">
-                <h1>Exclusive Creaters Apparel & Accessories At Your Fingertips</h1>
+                <h1>Exclusive Creators Apparel & Accessories At Your Fingertips</h1>
                 @auth
                 <button class="cta-btn rounded-btn"
                     onclick="window.location.href='{{ route('products.index') }}'">Purchase Now</button>
@@ -126,31 +100,45 @@
 
             <div class="faq-item" onclick="toggleFaq(this)">
                 <h4>How are items protected?</h4>
-                <p>Items are protected with insurance and safety measures during transportation.</p>
+                <p style="text-align: left;">Items are protected with insurance and safety measures during transportation.</p>
             </div>
 
             <div class="faq-item" onclick="toggleFaq(this)">
                 <h4>What if my rental doesn't fit?</h4>
-                <p>If your rental doesn't fit, you can request a size change or refund within 24 hours.</p>
+                <p style="text-align: left;">If your rental doesn't fit, you can request a size change or refund within 24 hours.</p>
             </div>
 
             <div class="faq-item" onclick="toggleFaq(this)">
                 <h4>What is the cleaning policy?</h4>
-                <p>We professionally clean every item before it's rented out to maintain high hygiene standards.</p>
+                <p style="text-align: left;">We professionally clean every item before it's rented out to maintain high hygiene standards.</p>
             </div>
 
             <div class="faq-item" onclick="toggleFaq(this)">
                 <h4>How does same-day delivery work?</h4>
-                <p>Same-day delivery is available in select cities for orders placed before noon.</p>
+                <p style="text-align: left;">Same-day delivery is available in select cities for orders placed before noon.</p>
             </div>
 
             <div class="faq-item" onclick="toggleFaq(this)">
                 <h4>What if I return my rental late?</h4>
-                <p>Late returns are subject to a late fee, which is outlined in your rental agreement.</p>
+                <p style="text-align: left;">Late returns are subject to a late fee, which is outlined in your rental agreement.</p>
             </div>
 
         </div>
     </section>
 
 </main>
+<script>
+
+
+function scrollSlider(direction) {
+  const slider = document.getElementById("uniqueProductSlider");
+  const scrollAmount = direction * 220; // Adjust for item width + margin
+  slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
+}
+    
+function toggleFaq(faq) {
+  faq.classList.toggle("open");
+}
+
+</script>
 @endsection

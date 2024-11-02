@@ -25,31 +25,90 @@
         <nav>
             <ul class="nav-links">
                 <li><a href="{{route('products.index')}}">Products</a></li>
-                <li><a href="#">Creaters</a></li>
+                <li><a href="{{route('buyer.celeb')}}">Creators</a></li>
                 <li><a href="{{route('product.rent')}}">Rental</a></li>
                 <li><a href="{{route('product.buy')}}">Purchase</a></li>
                 <li><a href="#">About Us</a></li>
-                <li><i class="fa-solid fa-magnifying-glass"></i></li>
+                <li onclick="toggleSearch()"><i class="fa-solid fa-magnifying-glass"></i></li>
             </ul>
         </nav>
+    </div>
+    <style>
+        .search-overlay {
+          position: absolute;
+          top: 0;
+          left: 100%;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.9);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: opacity 0.5s, left 0.7s;
+          opacity: 0;
+          visibility: hidden;
+        }
+        
+        .search-overlay.active {
+          left:0;
+          opacity: 1;
+          visibility: visible;
+        }
+        
+        .search-overlay .search-input {
+          width: 98%;
+          padding: 15px;
+          font-size: 1.2em;
+          border: none;
+          outline: none;
+          background-color: #444;
+          color: #fff;
+          border-radius: 5px;
+        }
+        
+        .search-overlay .close-btn {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          right: 20px;
+          font-size: 1.5em;
+          cursor: pointer;
+          background: none;
+          border: none;
+          color: #fff;
+        }
+    </style>
+    <div class="search-overlay" id="searchOverlay">
+      <button class="close-btn" onclick="toggleSearch()">✖</button>
+      <input type="text" class="search-input" placeholder="Type to search...">
     </div>
     <div class="header-buttons">
         @auth
             @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')
-                <button style="background: black;border: none;color: white; cursor:pointer;" onclick="window.location.href='{{ route('seller.front') }}'"><i class="fas fa-home"></i></button>
+                <button style="background: black;border: none;color: white; cursor:pointer;" onclick="window.location.href='{{ route('seller.front') }}'"><i class="fa-solid fa-user"></i></button>
+                <div style="display:flex;align-items:center;justify-content:center">
+                <span style="margin-right:5px"> Hy! </span> <span style="margin-left:5px">{{auth()->user()->name }}</span> 
+                </div>
             @endif  
-            <button class="cart-btn" onclick="openPopup('wishlist')"><i class="fa-regular fa-heart"></i></button>
-            <button class="cart-btn" id="cartButton"><i class="fa-solid fa-bag-shopping"></i></button>
+            @if(auth()->user()->role == 'buyer' || auth()->user()->role == 'admin')
+                <button class="cart-btn" onclick="openPopup('wishlist')"><i class="fa-regular fa-heart"></i></button>
+            @endif
+                <button class="cart-btn" id="cartButton"><i class="fa-solid fa-bag-shopping"></i></button>
             @if(auth()->user()->role == 'buyer')
-                <button class="settings-btn" id="settingsButton" onclick="window.location.href='{{ route('buyer.settings') }}'"><i class="fa-solid fa-cog"></i></button>
+                <button class="settings-btn" id="settingsButton" onclick="window.location.href='{{ route('buyer.settings') }}'"><i class="fa-solid fa-user"></i></button>
+                <div style="display:flex;align-items:center;justify-content:center">
+                    <span style="margin-right:5px"> Hy! </span> <span style="margin-left:5px">{{auth()->user()->name }}</span> 
+                </div>
             @endif    
         @endauth
 
         @if(Auth::check())
-        <form id="logout-form" action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="sign-in-btn rounded-btn">Logout</button>
-        </form>
+            @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')
+                <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="sign-in-btn rounded-btn">Logout</button>
+                </form>
+            @endif
         @else
             <button class="sign-in-btn rounded-btn" onclick="openPopup('signin')">Sign In</button>
         @endif
@@ -229,15 +288,18 @@
 
 <!-- Sidebar for menu -->
 <div class="menu-sidebar" id="menuSidebar">
-    <div class="logo">Emulate</div>
-    <nav>
-        <ul class="nav-links">
-            <li><a href="#">Creaters</a></li>
-            <li><a href="#">Rental</a></li>
-            <li><a href="#">Purchase</a></li>
-            <li><a href="#">About Us</a></li>
-        </ul>
-    </nav>
+    <div class="logo"  style="display:flex;justify-content:space-between;">
+        <div>Emulate</div> 
+        
+        <div onclick="toggleSearch()"><i class="fa-solid fa-magnifying-glass"></i></div>
+    </div>
+    <ul style="display:flex;flex-direction:column;">
+                <li><a href="{{route('products.index')}}">Products</a></li>
+                <li><a href="{{route('buyer.celeb')}}">Creators</a></li>
+                <li><a href="{{route('product.rent')}}">Rental</a></li>
+                <li><a href="{{route('product.buy')}}">Purchase</a></li>
+                <li><a href="#">About Us</a></li>
+    </ul>
 </div>
 
 <!-- wishlist popup  -->
@@ -507,11 +569,40 @@
 
 
     function closePopup(popupId) {
-        const popup = document.getElementById(popupId + '-popup');
-        if (popup) {
-            popup.style.display = 'none'; 
-        }
+        document.getElementById(`${popupId}-popup`).classList.remove("open");
+        overlay.style.display = "none";
+    }
+    
+    function toggleSearch() {
+      const searchOverlay = document.getElementById('searchOverlay');
+      searchOverlay.classList.toggle('active');
     }
 </script>
 
- 
+<script>
+     
+    const menuSidebar = document.getElementById("menuSidebar");
+    const svgElement = document.querySelector(".hb");
+
+    // Open sidebar and show overlay when menu button is clicked
+    svgElement.addEventListener("click", () => {
+    // Check the current position of the sidebar
+    if (menuSidebar.style.right === "0px") {
+        // Close the sidebar and hide the overlay
+        menuSidebar.style.right = "-100%";
+        overlay.style.display = "none";
+
+        // Trigger the SVG reverse animation
+        const reverseAnimation = document.getElementById("reverse");
+        reverseAnimation.beginElement();
+    } else {
+        // Open the sidebar and show the overlay
+        menuSidebar.style.right = "0";
+        overlay.style.display = "block";
+
+        // Trigger the SVG opening animation
+        const startAnimation = document.getElementById("start");
+        startAnimation.beginElement();
+    }
+    });
+ </script>

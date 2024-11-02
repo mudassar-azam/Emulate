@@ -16,6 +16,19 @@
     border-left: 1px solid black;
  
 }
+.menu-sidebar{
+    gap:20px;
+    justify-content: unset;
+}
+
+.menu-sidebar ul{
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+}
+.menu-sidebar ul li{
+    font-weight:bold;
+}
 .menu-btn{
     display: none;
 }

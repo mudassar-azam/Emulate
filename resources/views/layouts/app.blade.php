@@ -76,6 +76,7 @@
     </div>
 
     @yield('content')
+    @include('partial.footer')
     @stack('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -179,13 +180,6 @@
                 newItem.style.justifyContent = 'center';
                 newItem.style.gap = '15rem';
                 newItem.style.margin = '2em 3em';
-                // function createSlug(text) {
-                //     return text.toLowerCase()
-                //         .replace(/\s+/g, '-') 
-                //         .replace(/[^\w-]+/g, '') 
-                //         .replace(/--+/g, '-') 
-                //         .trim();
-                // }
                 var itemContent = `
                             <div style="display:flex;align-items: center;justify-content: center;height: 13%; gap:10px;" >
                                 <div>
@@ -328,57 +322,6 @@
                     console.error('Error fetching cart items:', error);
                 });
         }
-
-        document.getElementById('add-to-cart').addEventListener('click', function(event) {
-            event.preventDefault();
-
-            let productId = this.getAttribute('data-product-id');
-
-            fetch('{{ route("cart.store") }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        product_id: productId
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const successAlert = document.getElementById('alert-success');
-
-                    if (data.status === 'added') {
-                        successAlert.style.display = 'block';
-                        successAlert.style.visibility = 'visible';
-
-                        successAlert.textContent = data.message;
-                        successAlert.classList.remove('alert-info');
-                        successAlert.classList.add('alert-success');
-
-                        setTimeout(function() {
-                            successAlert.style.display = 'none';
-                        }, 2000);
-
-                    }
-
-                    if (data.status === 'exists') {
-                        toastr.error('Product already in cart.', 'Error', {
-                            positionClass: 'toast-top-right',
-                            timeOut: 3000
-                        });
-                    }
-
-                    if (data.status === 'out_of_stock') {
-                        toastr.error('Product is out of stock.', 'Error', {
-                            positionClass: 'toast-top-right',
-                            timeOut: 3000
-                        });
-                    }
-
-                    fetchCartItems();
-                })
-        });
 
         function removeCartItem(cartId) {
             fetch(`{{ url('cart/remove') }}/${cartId}`, {

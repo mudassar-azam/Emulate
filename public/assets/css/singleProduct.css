@@ -2,8 +2,8 @@
 .lSSlideWrapper.usingCss .lightSlider {
   height: 400px !important;
 }
-.card {
-  background-color: #fff;
+.product-images .card {
+  background-color: transparent;
   padding: 14px;
   border: none;
 }

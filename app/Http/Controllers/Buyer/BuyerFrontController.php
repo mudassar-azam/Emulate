@@ -21,5 +21,31 @@ class BuyerFrontController extends Controller
 
         return view('buyer.index', compact('users', 'sellers', 'items', 'email', 'showModal'));
     }
+   
+    
+
+
+
+   public function fetchCeleb(Request $request)
+  {
+    // Start with a query that selects only users with the role 'seller'
+    $query = User::where('role', 'seller');
+
+    // Apply search filter if a search term is provided
+    if ($request->has('search')) {
+        $search = $request->input('search');
+        $query->where(function($q) use ($search) {
+            $q->where('name', 'LIKE', "%$search%")
+              ->orWhere('role', 'LIKE', "%$search%");
+        });
+    }
+
+    // Paginate the results
+    $celebrities = $query->paginate(10);
+
+    return view('buyer.celeb', compact('celebrities'));
+  }
+
+
 
 }

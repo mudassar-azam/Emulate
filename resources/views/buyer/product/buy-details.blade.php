@@ -49,9 +49,12 @@
                     <div style="display:flex;width: 50%;justify-content: space-between;align-items:center;">
                         <a href="{{route('seller.profile' , $item->user->id)}}"><span
                                 class="seller-name">{{$item->user->name}}</span></a>
+                            @auth     
                         @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')
                         <button onclick="openPopup('addnewitem')"><i class="fa-regular fa-pen-to-square"></i></button>
                         @endif
+                          @endauth
+                        
                     </div>
                 </div>
                 <div class="d-flex justify-between align-center">
@@ -98,20 +101,14 @@
                 @auth
                 <div class="product-actions" style="gap:2em">
                     @if($item->stock > 0)
-                    <form action="{{route('buyer.order.now')}}" method="post">
+                    <form style="width: 100%;" action="{{route('buyer.order.now')}}" method="post">
                         @csrf
                         <input type="hidden" name="product_id" value="{{$item->id}}">
-                        <button style="width:100%" class="buy-now-btn" type="submit">Buy Now</button>
+                        <button  style="width: 100%;" class="rent-btn">Add To Cart</button>
                     </form>
                     @else
-                    <button class="buy-now-btn">Out Of Stock</button>
+                    <button style="width: 100%;" class="buy-now-btn">Out Of Stock</button>
                     @endif
-                    <form action="{{route('cart.store')}}" method="post">
-                        @csrf
-                        <input type="hidden" name="ptoduct_id" value="{{$item->id}}">
-                        <button id="add-to-cart" data-product-id="{{ $item->id }}" style="width: 100%;"
-                            class="rent-btn">Add To Cart</button>
-                    </form>
                 </div>
                 @else
                 <button class="buy-now-btn" onclick="openPopup('signin')">Login ! To Buy Item</button>

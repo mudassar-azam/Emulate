@@ -12,7 +12,7 @@ class ItemImagesSeeder extends Seeder
     {
         $imageNames = [
             '1728438048_6705df209a184_1.jfif',
-            '1728438048_6705df209a184_2.jfif',
+            '17302077346720dff61edc1priscilla-du-preez-dlxLGIy-2VU-unsplash.jpg',
             '1728438048_6705df209a184_3.jfif',
             '1728438048_6705df209a184_4.jfif',
             '1728438048_6705df209a184_5.jfif',

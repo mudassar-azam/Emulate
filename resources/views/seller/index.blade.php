@@ -810,11 +810,10 @@
 </script>
 
 <script>
+
     function closePopup(popupId) {
-        const popup = document.getElementById(popupId + '-popup');
-        if (popup) {
-            popup.style.display = 'none'; 
-        }
+        document.getElementById(`${popupId}-popup`).classList.remove("open");
+        overlay.style.display = "none";
     }
 </script>
 @endpush

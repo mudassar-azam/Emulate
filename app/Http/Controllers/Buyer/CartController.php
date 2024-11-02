@@ -32,9 +32,6 @@ class CartController extends Controller
     
         $cart = Cart::where('user_id', $user_id)->where('product_id', $product_id)->first();
     
-        if ($cart) {
-            return response()->json(['status' => 'exists', 'message' => 'Product is already in your cart!']);
-        } else {
             $cart = Cart::create([
                 'user_id' => $user_id,
                 'product_id' => $product_id
@@ -46,7 +43,6 @@ class CartController extends Controller
             
     
             return response()->json(['status' => 'added', 'message' => 'Product added to cart successfully!', 'cart_items' => $cartItems]);
-        }
     }    
 
     public function remove($id)
@@ -73,15 +69,24 @@ class CartController extends Controller
         }
     
         foreach ($carts as $cart) {
-    
-            Order::create([
+            $orderData = [
                 'user_id' => Auth::user()->id,
                 'product_id' => $cart->product->id,
                 'product_owner_id' => $cart->product->user_id,
-                'type' => 'cart',
+                'type' => $cart->type,
                 'payment_status' => 'due',
-                'total_payment' => $cart->product->sale_price,
-            ]);
+            ];
+        
+            if ($cart->type == "rent") {
+                $orderData['lease_term'] = $cart->lease_term;
+                $orderData['start_date'] = $cart->start_date;
+                $orderData['end_date'] = $cart->end_date;
+                $orderData['total_payment'] = $cart->total_payment;
+            }else{
+                $orderData['total_payment'] = $cart->product->sale_price;
+            }
+        
+            Order::create($orderData);
         }
     
         foreach($carts as $cart) {

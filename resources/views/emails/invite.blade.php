@@ -14,6 +14,6 @@
 <p>If you have any questions, feel free to reach out to us.</p>
 
 <p>Best regards,<br>
-    The [Your Company Name] Team</p>
+    The Emulate Team</p>
 </body>
 </html>

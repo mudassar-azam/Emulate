@@ -124,9 +124,17 @@ td img {
                         <span class="topic">Profile</span>
                     </label>
                     <label for="help" class="help">
-
                         <i class="fa-solid fa-gear"></i>
                         <span class="topic">Setting</span>
+                    </label>
+                    <label for="help" class="help">
+                        <i class="fas fa-sign-out-alt"></i>
+                        @if(auth()->user()->role == 'buyer')
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="sign-in-btn rounded-btn">Logout</button>
+                            </form>
+                        @endif
                     </label>
 
                     <div class="indicator"></div>

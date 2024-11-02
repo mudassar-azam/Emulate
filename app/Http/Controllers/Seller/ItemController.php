@@ -67,7 +67,7 @@ class ItemController extends Controller
         return response()->json(['success' => true, 'message' => 'Item created successfully!']);
     }
 
-    public function update(Request $request, $id)
+  public function update(Request $request, $id)
     {
         $rules = [
             'name' => 'required',
@@ -108,10 +108,19 @@ class ItemController extends Controller
         $item->update($data);
 
         if ($request->hasFile('images')) {
+            $previousImages = ItemImage::where('item_id', $id)->get();
+            foreach ($previousImages as $prevImage) {
+                $imagePath = public_path('item-images/' . $prevImage->image_name);
+                if (file_exists($imagePath)) {
+                    unlink($imagePath); 
+                }
+                $prevImage->delete(); 
+            }
+        
             foreach ($request->file('images') as $image) {
                 $destinationPath = public_path('item-images');
                 $originalName = $image->getClientOriginalName();
-                $uniqueName = time() . '_' . uniqid() . '_' . $originalName;
+                $uniqueName = time() . '' . uniqid() . '' . $originalName;
                 $image->move($destinationPath, $uniqueName);
                 ItemImage::create([
                     'item_id' => $item->id,
@@ -119,6 +128,7 @@ class ItemController extends Controller
                 ]);
             }
         }
+        
 
         return response()->json(['success' => true, 'message' => 'Item updated successfully!']);
     }

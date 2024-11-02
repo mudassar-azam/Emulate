@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Buyer\Order;
+use App\Models\Buyer\Cart;
 use App\Models\Seller\Item;
 
 class OrderController extends Controller
@@ -28,7 +28,7 @@ class OrderController extends Controller
                 $calculated_price = $lease_days * $product->rental_price; 
             }
 
-            $order = Order::create([
+            $cart = Cart::create([
                 'user_id' => auth()->id(), 
                 'product_id' => $validatedData['product_id'],
                 'product_owner_id' => $product->user_id,
@@ -41,8 +41,8 @@ class OrderController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Order created successfully!',
-                'order' => $order
+                'message' => 'Added to cart !',
+                'order' => $cart
             ], 201);
             
         } catch (\Exception $e) {
@@ -63,9 +63,9 @@ class OrderController extends Controller
         $data['payment_status'] = 'due';
         $data['total_payment'] = $product->sale_price;
     
-        $order = Order::create($data);
+        $cart = Cart::create($data);
     
-        return redirect()->route('buyer.checkout');
+        return redirect()->back();
     }
     
 

@@ -62,10 +62,12 @@
         </div>
         <div class="header-buttons" style="width: 10%;">
             @if(Auth::check())
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style=" margin: 0px;">
-                @csrf
-                <button type="submit" class="sign-in-btn rounded-btn">Logout</button>
-            </form>
+                @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="sign-in-btn rounded-btn">Logout</button>
+                    </form>
+                @endif
             @else
             <button class="sign-in-btn rounded-btn" onclick="openPopup('signin')">Sign In</button>
             @endif

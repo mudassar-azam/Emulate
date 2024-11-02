@@ -49,9 +49,11 @@
                     <div style="display:flex;width: 50%;justify-content: space-between;align-items:center;">
                         <a href="{{route('seller.profile' , $item->user->id)}}"><span
                                 class="seller-name">{{$item->user->name}}</span></a>
+                           @auth      
                         @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')
                         <button onclick="openPopup('addnewitem')"><i class="fa-regular fa-pen-to-square"></i></button>
                         @endif
+                          @endauth
                     </div>
                 </div>
                 <div class="d-flex justify-between align-center">
@@ -98,16 +100,10 @@
                 @auth
                 <div class="product-actions">
                     @if($item->stock > 0)
-                    <button class="rent-btn" onclick="openPopup('rent')">Rent</button>
+                        <button style="width: 100%;" class="rent-btn" onclick="openPopup('rent')" >Add Rental To Cart</button>
                     @else
-                    <button class="rent-btn">Out Of Stock</button>
+                        <button style="width: 100%;" class="rent-btn">Out Of Stock</button>
                     @endif
-                    <form action="{{route('cart.store')}}" method="post">
-                        @csrf
-                        <input type="hidden" name="ptoduct_id" value="{{$item->id}}">
-                        <button id="add-to-cart" data-product-id="{{ $item->id }}" style="width: 100%;"
-                            class="rent-btn">Add To Cart</button>
-                    </form>
                 </div>
                 @else
                 <button class="buy-now-btn" onclick="openPopup('signin')">Login ! To Rent </button>Item
@@ -211,7 +207,7 @@
             <label for="size">Size</label>
             <input class="size" type="text" name="size" value="{{$item->size}}" readonly>
 
-            <button class="apply-btn" onclick="applyRent()">APPLY</button>
+            <button class="apply-btn" onclick="applyRent()">Add To Cart</button>
         </div>
     </div>
 </div>
@@ -450,7 +446,7 @@ function applyRent() {
 
     axios.post('/orders', data)
         .then(response => {
-            window.location.href = "{{ route('buyer.checkout') }}";
+            window.location.reload();
         })
         .catch(error => {
             console.error('There was an error!', error);
