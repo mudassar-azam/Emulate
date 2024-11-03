@@ -14,4 +14,9 @@ class ItemSize extends Model
         'item_id',
         'quantity',
     ];
+
+    public function size()
+    {
+        return $this->belongsTo(Size::class , 'size_id');
+    }
 }

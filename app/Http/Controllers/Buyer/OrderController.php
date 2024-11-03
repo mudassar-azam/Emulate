@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Buyer\Cart;
+use App\Models\Buyer\Order;
 use App\Models\Seller\Item;
 
 class OrderController extends Controller
@@ -18,8 +19,10 @@ class OrderController extends Controller
                 'lease_term' => 'required|string',
                 'start_date' => 'required|string',
                 'end_date' => 'required|string',
+                'size' => 'required',
                 'product_id' => 'required|exists:items,id',
             ]);
+
 
             $product = Item::find($validatedData['product_id']);
 
@@ -31,6 +34,7 @@ class OrderController extends Controller
             $cart = Cart::create([
                 'user_id' => auth()->id(), 
                 'product_id' => $validatedData['product_id'],
+                'size_id' => $validatedData['size'],
                 'product_owner_id' => $product->user_id,
                 'lease_term' => $validatedData['lease_term'],
                 'start_date' => $validatedData['start_date'], 
@@ -58,6 +62,7 @@ class OrderController extends Controller
         $data = $request->all();
         $data['user_id'] = Auth::user()->id;
         $data['product_id'] = $request->input('product_id');
+        $data['size_id'] = $request->input('selected_size');
         $data['product_owner_id'] = $product->user_id;
         $data['type'] = 'buy';
         $data['payment_status'] = 'due';

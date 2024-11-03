@@ -14,7 +14,6 @@ return new class extends Migration
             $table->string('name');
             $table->decimal('sale_price', 8, 2)->nullable();
             $table->decimal('rental_price', 8, 2)->nullable();
-            $table->string('size');
             $table->string('item_type');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category_id');

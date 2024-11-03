@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Seller\Item;
+use App\Models\Seller\ItemSize;
 use App\Models\User;
 use App\Models\Category;
 
@@ -22,7 +23,8 @@ class ProductController extends Controller
         $item = Item::with('itemImages')->findOrFail($id);
         $products = Item::all();
         $categories = Category::all();
-        return view('buyer.product.product-details',compact('products','categories','item'));
+        $sizes = ItemSize::where('item_id', $id)->where('quantity', '>', 0)->get();
+        return view('buyer.product.product-details',compact('products','sizes','categories','item'));
     }
 
     public function rent(){
@@ -43,14 +45,16 @@ class ProductController extends Controller
         $item = Item::with('itemImages')->findOrFail($id);
         $products = Item::where('item_type' , 'for_rent')->get();
         $categories = Category::all();
-        return view('buyer.product.rent-details',compact('products','categories','item'));
+        $sizes = ItemSize::where('item_id', $id)->where('quantity', '>', 0)->get();
+        return view('buyer.product.rent-details',compact('products','sizes','categories','item'));
     }
 
     public function buyDetails($id){
         $item = Item::with('itemImages')->findOrFail($id);
         $products = Item::where('item_type' , 'for_sale')->get();
         $categories = Category::all();
-        return view('buyer.product.buy-details',compact('products','categories','item'));
+        $sizes = ItemSize::where('item_id', $id)->where('quantity', '>', 0)->get();
+        return view('buyer.product.buy-details',compact('products','sizes','categories','item'));
     }
 
     public function wishlistProductDetails($name) {

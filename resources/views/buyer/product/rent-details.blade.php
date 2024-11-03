@@ -6,14 +6,24 @@
     </div>
     <div id="alert-success" class="alert alert-success" style="display: none;"></div>
     <style>
-    .back-btn {
-        cursor: pointer;
-    }
+        .back-btn {
+            cursor: pointer;
+        }
 
-    .heart-icon {
-        border-radius: 50%;
-        padding: 5px;
-    }
+        .heart-icon {
+            border-radius: 50%;
+            padding: 5px;
+        }
+        .size-option1 {
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+        .size-option1:hover {
+            background-color: black;
+            color: white;
+        }
     </style>
 
     <div class="back-btn" onclick="goBack()">
@@ -49,19 +59,11 @@
                     <div style="display:flex;width: 50%;justify-content: space-between;align-items:center;">
                         <a href="{{route('seller.profile' , $item->user->id)}}"><span
                                 class="seller-name">{{$item->user->name}}</span></a>
-<<<<<<< HEAD
-                           @auth      
-                        @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')
-                        <button onclick="openPopup('addnewitem')"><i class="fa-regular fa-pen-to-square"></i></button>
-                        @endif
-                          @endauth
-=======
                         @auth        
                             @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')
                             <button onclick="openPopup('addnewitem')"><i class="fa-regular fa-pen-to-square"></i></button>
                             @endif
                         @endauth
->>>>>>> 2563694ea26ca8c95c0c983979f37f273eb7b17b
                     </div>
                 </div>
                 <div class="d-flex justify-between align-center">
@@ -95,7 +97,10 @@
                 </div>
 
                 <div>
-                    <div><b>Size: </b><span>{{$item->size}}</span></div>
+                    <b>Size: </b>
+                    @foreach($sizes as $index => $size)
+                        <span class="size-option1">{{ $size->size->size }}</span>@if($index < count($sizes) - 1), @endif
+                    @endforeach
                 </div>
 
                 <div style="display:flex;gap:1em;">
@@ -107,7 +112,7 @@
                 </div>
                 @auth
                 <div class="product-actions">
-                    @if($item->stock > 0)
+                    @if($sizes->count() > 0)
                         <button style="width: 100%;" class="rent-btn" onclick="openPopup('rent')" >Add Rental To Cart</button>
                     @else
                         <button style="width: 100%;" class="rent-btn">Out Of Stock</button>
@@ -213,7 +218,11 @@
             </div>
 
             <label for="size">Size</label>
-            <input class="size" type="text" name="size" value="{{$item->size}}" readonly>
+            <select name="size" class="msize">
+                @foreach($sizes as $size)
+                    <option value="{{$size->id}}">{{$size->size->size}}</option>
+                @endforeach    
+            </select>
 
             <button class="apply-btn" onclick="applyRent()">Add To Cart</button>
         </div>
@@ -404,7 +413,7 @@ document.querySelectorAll('.lease-term button').forEach(button => {
 function applyRent() {
     const leaseTerm = document.querySelector('.lease-term button.active').textContent;
     const selectedButton = document.querySelector('.calendar-grid button.range');
-    const size = document.querySelector('.size').value;
+    const size = document.querySelector('.msize').value;
 
     if (!selectedButton) {
         toastr.error('Select Date', 'Success', {
@@ -448,6 +457,7 @@ function applyRent() {
         lease_term: leaseTerm,
         start_date: startDate,
         end_date: endDate,
+        size: size,
         product_id: {{$item->id}},
     };
 

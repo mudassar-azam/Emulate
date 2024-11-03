@@ -12,6 +12,7 @@ return new class extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('size_id')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreignId('product_owner_id')->nullable()->constrained('users');
             $table->string('lease_term')->nullable();
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreign('product_id')->references('id')->on('items')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('size_id')->references('id')->on('item_sizes')->onDelete('cascade');
         });
     }
 

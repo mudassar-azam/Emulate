@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Seller\Item;
+use App\Models\Seller\ItemSize;
 use App\Models\Buyer\Cart;
 
 class Order extends Model
@@ -20,6 +21,7 @@ class Order extends Model
         'start_date',
         'end_date',
         'type',
+        'size_id',
         'product_owner_id',
         'payment_status',
         'total_payment'
@@ -38,5 +40,10 @@ class Order extends Model
     public function product()
     {
         return $this->belongsTo(Item::class , 'product_id');
+    }
+
+    public function itemsize()
+    {
+        return $this->belongsTo(ItemSize::class , 'size_id');
     }
 }

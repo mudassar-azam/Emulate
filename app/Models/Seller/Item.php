@@ -14,7 +14,6 @@ class Item extends Model
         'name',
         'sale_price',
         'rental_price',
-        'size',
         'user_id',
         'category_id',
         'item_type',
@@ -33,4 +32,5 @@ class Item extends Model
     {
         return $this->belongsTo(User::class, 'user_id'); 
     }
+
 }

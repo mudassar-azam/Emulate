@@ -72,6 +72,7 @@ class CartController extends Controller
             $orderData = [
                 'user_id' => Auth::user()->id,
                 'product_id' => $cart->product->id,
+                'size_id' => $cart->size_id,
                 'product_owner_id' => $cart->product->user_id,
                 'type' => $cart->type,
                 'payment_status' => 'due',

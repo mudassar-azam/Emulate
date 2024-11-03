@@ -6,14 +6,28 @@
     </div>
     <div id="alert-success" class="alert alert-success" style="display: none;"></div>
     <style>
-    .back-btn {
-        cursor: pointer;
-    }
+        .back-btn {
+            cursor: pointer;
+        }
 
-    .heart-icon {
-        border-radius: 50%;
-        padding: 5px;
-    }
+        .heart-icon {
+            border-radius: 50%;
+            padding: 5px;
+        }
+        .size-option {
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+        .size-option:hover {
+            background-color: black;
+            color: white;
+        }
+        .size-option.selected {
+            background-color: black;
+            color: white;
+        }
     </style>
 
     <div class="back-btn" onclick="goBack()">
@@ -49,20 +63,11 @@
                     <div style="display:flex;width: 50%;justify-content: space-between;align-items:center;">
                         <a href="{{route('seller.profile' , $item->user->id)}}"><span
                                 class="seller-name">{{$item->user->name}}</span></a>
-<<<<<<< HEAD
-                            @auth     
-                        @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')
-                        <button onclick="openPopup('addnewitem')"><i class="fa-regular fa-pen-to-square"></i></button>
-                        @endif
-                          @endauth
-                        
-=======
                         @auth
                             @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')
                                 <button onclick="openPopup('addnewitem')"><i class="fa-regular fa-pen-to-square"></i></button>
                             @endif
                         @endauth
->>>>>>> 2563694ea26ca8c95c0c983979f37f273eb7b17b
                     </div>
                 </div>
                 <div class="d-flex justify-between align-center">
@@ -96,7 +101,10 @@
                 </div>
 
                 <div>
-                    <div><b>Size: </b><span>{{$item->size}}</span></div>
+                    <b>Size: </b>
+                    @foreach($sizes as $index => $size)
+                        <span class="size-option" data-size="{{ $size->id }}">{{ $size->size->size }}</span>@if($index < count($sizes) - 1), @endif
+                    @endforeach
                 </div>
 
                 <div style="display:flex;gap:1em;">
@@ -108,9 +116,10 @@
                 </div>
                 @auth
                 <div class="product-actions" style="gap:2em">
-                    @if($item->stock > 0)
-                    <form style="width: 100%;" action="{{route('buyer.order.now')}}" method="post">
+                    @if($sizes->count() > 0)
+                    <form style="width: 100%;" action="{{route('buyer.order.now')}}" method="post" id="orderForm">
                         @csrf
+                        <input type="hidden" name="selected_size" id="selected_size" />
                         <input type="hidden" name="product_id" value="{{$item->id}}">
                         <button  style="width: 100%;" class="rent-btn">Add To Cart</button>
                     </form>
@@ -273,6 +282,30 @@ $('#lightSlider').lightSlider({
     slideMargin: 0,
     thumbItem: 6
 });
+</script>
+<script>
+    document.querySelectorAll('.size-option').forEach(function(sizeOption) {
+        sizeOption.addEventListener('click', function() {
+            document.querySelectorAll('.size-option').forEach(function(item) {
+                item.classList.remove('selected');
+            });
+            
+            this.classList.add('selected');
+            
+            document.getElementById('selected_size').value = this.getAttribute('data-size');
+        });
+    });
+    document.getElementById('orderForm').addEventListener('submit', function(event) {
+        if (!document.getElementById('selected_size').value) {
+            event.preventDefault(); // Prevent form submission
+            
+            // Show Toastr error notification
+            toastr.error('Please select a size before adding to cart.', 'Error', {
+                positionClass: 'toast-top-right',
+                timeOut: 3000
+            });
+        }
+    });
 </script>
 <script>
 function toggleFields() {

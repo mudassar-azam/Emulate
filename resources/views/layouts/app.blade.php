@@ -301,7 +301,6 @@
                                                     <div class="pricing">
                                                         ${priceHtml}
                                                     </div>
-                                                    <p>Size: ${item.product.size}</p>
                                                 </div>
                                                 <button class="remove-from-cart" data-cart-id="${item.id}">Remove</button>
                                             </div>

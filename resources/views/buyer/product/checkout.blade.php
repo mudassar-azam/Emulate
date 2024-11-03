@@ -52,7 +52,7 @@
             <nav>
                 <ul class="nav-links">
                     <li><a href="{{route('products.index')}}">Products</a></li>
-                    <li><a href="#">Creaters</a></li>
+                    <li><a href="{{route('buyer.celeb')}}">Creaters</a></li>
                     <li><a href="{{route('product.rent')}}">Rental</a></li>
                     <li><a href="{{route('product.buy')}}">Purchase</a></li>
                     <li><a href="#">About Us</a></li>
@@ -173,7 +173,7 @@
 
                             <div class="rental-description">
                                 <p>{{$order->product->name}}</p>
-                                <p>{{$order->product->size}}</p>
+                                <p>Size : {{$order->itemsize->size->size}}</p>
                             </div>
                         </div>
                         <div class="rental-action">

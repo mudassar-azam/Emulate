@@ -6,14 +6,38 @@
     </div>
     <div id="alert-success" class="alert alert-success" style="display: none;"></div>
     <style>
-    .back-btn {
-        cursor: pointer;
-    }
+        .back-btn {
+            cursor: pointer;
+        }
 
-    .heart-icon {
-        border-radius: 50%;
-        padding: 5px;
-    }
+        .heart-icon {
+            border-radius: 50%;
+            padding: 5px;
+        }
+        .size-option {
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+        .size-option:hover {
+            background-color: black;
+            color: white;
+        }
+        .size-option1 {
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+        .size-option1:hover {
+            background-color: black;
+            color: white;
+        }
+        .size-option.selected {
+            background-color: black;
+            color: white;
+        }
     </style>
 
     <div class="back-btn" onclick="goBack()">
@@ -85,7 +109,16 @@
                 </div>
 
                 <div>
-                    <div><b>Size: </b><span>{{$item->size}}</span></div>
+                    <b>Size: </b>
+                    @if($item->item_type == 'for_rent')
+                        @foreach($sizes as $index => $size)
+                            <span class="size-option1">{{ $size->size->size }}</span>@if($index < count($sizes) - 1), @endif
+                        @endforeach
+                    @else 
+                        @foreach($sizes as $index => $size)
+                            <span class="size-option" data-size="{{ $size->id }}">{{ $size->size->size }}</span>@if($index < count($sizes) - 1), @endif
+                        @endforeach
+                    @endif    
                 </div>
 
                 <div style="display:flex;gap:1em;">
@@ -102,15 +135,16 @@
                 @auth
                     <div class="product-actions" style="gap:2em">
                         @if($item->item_type == 'for_rent')
-                            @if($item->stock > 0)
+                            @if($sizes->count() > 0)
                                 <button style="width: 100%;" class="rent-btn" onclick="openPopup('rent')" >Add Rental To Cart</button>
                             @else
                                 <button style="width: 100%;" class="rent-btn">Out Of Stock</button>
                             @endif
                         @else
-                            @if($item->stock > 0)
+                            @if($sizes->count() > 0)
                                 <form style="width: 100%;" action="{{route('buyer.order.now')}}" method="post">
                                     @csrf
+                                    <input type="hidden" name="selected_size" id="selected_size" />
                                     <input type="hidden" name="product_id" value="{{$item->id}}">
                                     <button  style="width: 100%;" class="rent-btn">Add To Cart</button>
                                 </form>
@@ -295,7 +329,11 @@
             </div>
 
             <label for="size">Size</label>
-            <input type="text" name="size" value="{{$item->size}}" readonly>
+            <select name="size" class="msize">
+                @foreach($sizes as $size)
+                    <option value="{{$size->id}}">{{$size->size->size}}</option>
+                @endforeach    
+            </select>
 
             <button class="apply-btn" onclick="applyRent()">Add To Cart</button>
         </div>
@@ -310,6 +348,19 @@
 function goBack() {
     window.history.back();
 }
+</script>
+<script>
+    document.querySelectorAll('.size-option').forEach(function(sizeOption) {
+        sizeOption.addEventListener('click', function() {
+            document.querySelectorAll('.size-option').forEach(function(item) {
+                item.classList.remove('selected');
+            });
+            
+            this.classList.add('selected');
+            
+            document.getElementById('selected_size').value = this.getAttribute('data-size');
+        });
+    });
 </script>
 <script>
     function toggleFields() {
@@ -426,8 +477,7 @@ $('#lightSlider').lightSlider({
     function applyRent() {
         const leaseTerm = document.querySelector('.lease-term button.active').textContent;
         const selectedButton = document.querySelector('.calendar-grid button.range');
-        const size = document.querySelector('.size').value;
-
+        const size = document.querySelector('.msize').value;
 
         if (!selectedButton) {
             toastr.error('Select Date', 'Success', {
@@ -471,6 +521,7 @@ $('#lightSlider').lightSlider({
             lease_term: leaseTerm,
             start_date: startDate,
             end_date: endDate,
+            size: size,
             product_id: {{$item->id}},
         };
 
