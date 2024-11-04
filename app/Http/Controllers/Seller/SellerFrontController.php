@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Seller\Item;
 use App\Models\Seller\Post;
+use App\Models\Seller\Size;
+use App\Models\Seller\ItemSize;
 use App\Models\Buyer\Order;
 use App\Models\User;
 use App\Models\Information;
@@ -31,7 +33,8 @@ class SellerFrontController extends Controller
         }
         
         $categories = Category::all();
-        return view('seller.index',compact('user','items','categories','posts'));
+        $sizes = Size::all();
+        return view('seller.index',compact('user','sizes','items','categories','posts'));
 
     }
 

@@ -16,6 +16,7 @@ use App\Http\Controllers\Buyer\WishlistController;
 use App\Http\Controllers\Buyer\BuyerSettingsController;
 use App\Http\Middleware\CheckUserRole;
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\SearchController;
 
 
 use Illuminate\Support\Facades\Artisan;
@@ -93,4 +94,6 @@ Route::post('/subscribe-seller', [SellerFrontController::class, 'subscribe'])->n
     Route::post('/add-to-wishlist', [WishlistController::class, 'store'])->name('add.wishlist');
     Route::get('/wishlist-items', [WishlistController::class, 'getWishlistItems'])->name('wishlist.all');
     Route::post('/remove-wishlist-item', [WishlistController::class, 'removeWishlistItem'])->name('wishlist.remove');
+
+    Route::get('/search', [SearchController::class, 'search'])->name('search');    
 

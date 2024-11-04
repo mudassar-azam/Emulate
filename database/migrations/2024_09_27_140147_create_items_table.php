@@ -19,7 +19,6 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->integer('stock');
             $table->text('description');
             $table->timestamps();
     

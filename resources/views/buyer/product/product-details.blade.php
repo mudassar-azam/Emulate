@@ -72,8 +72,10 @@
                         <div style="display:flex;width: 50%;justify-content: space-between;align-items:center;">
                             <a href="{{route('seller.profile' , $item->user->id)}}"><span class="seller-name">{{$item->user->name}}</span></a>
                             @auth 
-                                @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')
+                                @if(auth()->user()->role == 'admin')
                                     <button onclick="openPopup('addnewitem')"><i class="fa-regular fa-pen-to-square"></i></button>
+                                @elseif(auth()->user()->role == 'seller' &&  $item->user->id == auth()->user()->id)   
+                                    <button onclick="openPopup('addnewitem')"><i class="fa-regular fa-pen-to-square"></i></button> 
                                 @endif  
                             @endauth
                         </div>
@@ -264,22 +266,26 @@
                     <input style="width: 100%;padding: 6px;margin-bottom: 20px;border: 1px solid #ddd;border-radius: 5px;" type="date" id="end_date" name="end_date" value="{{ $item->end_date }}">
                 </div>
 
-                <div id="for-stock" >
-                    <label for="stock">Stock</label>
-                    <input type="number" id="stock" name="stock" value="{{ $item->stock }}">
-                </div>
 
                 <div id="description" >
                     <label for="description">Description</label>
                     <input type="text" id="description" name="description" value="{{ $item->description }}">
                 </div>
 
+
                 <label for="size">Size</label>
-                <select id="size" name="size" class="size">
-                    <option value="L" {{ $item->size == 'L' ? 'selected' : '' }}>L</option>
-                    <option value="M" {{ $item->size == 'M' ? 'selected' : '' }}>M</option>
-                    <option value="S" {{ $item->size == 'S' ? 'selected' : '' }}>S</option>
-                </select>
+                <div id="size" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    @foreach($msizes as $size)
+                        <div style="display: flex; align-items: center;">
+                            <label>
+                                <input type="checkbox" name="size_id[]" value="{{ $size->id }}" id="size-checkbox-{{ $size->id }}" onchange="toggleQuantityInput(this)">
+                                {{ $size->size }}
+                            </label>
+                            <input type="number" name="quantity[{{ $size->id }}]" placeholder="add quantity"
+                            id="quantity-input-{{ $size->id }}" style="margin-left: 10px;margin-top: 10px; display: none; width: 110px;" >
+                        </div>
+                    @endforeach
+                </div>
 
                 <button type="submit" class="apply-btn">Update Item</button>
             </form>
@@ -350,17 +356,17 @@ function goBack() {
 }
 </script>
 <script>
-    document.querySelectorAll('.size-option').forEach(function(sizeOption) {
-        sizeOption.addEventListener('click', function() {
-            document.querySelectorAll('.size-option').forEach(function(item) {
-                item.classList.remove('selected');
-            });
-            
-            this.classList.add('selected');
-            
-            document.getElementById('selected_size').value = this.getAttribute('data-size');
-        });
-    });
+    function toggleQuantityInput(checkbox) {
+        const quantityInput = document.getElementById(`quantity-input-${checkbox.value}`);
+        if (checkbox.checked) {
+            quantityInput.style.display = 'inline-block';
+            quantityInput.setAttribute('required', 'required');
+        } else {
+            quantityInput.style.display = 'none';
+            quantityInput.removeAttribute('required');
+            quantityInput.value = '';
+        }
+    }
 </script>
 <script>
     function toggleFields() {

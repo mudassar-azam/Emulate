@@ -78,10 +78,12 @@
           color: #fff;
         }
     </style>
-    <div class="search-overlay" id="searchOverlay">
-      <button class="close-btn" onclick="toggleSearch()">✖</button>
-      <input type="text" class="search-input" placeholder="Type to search...">
-    </div>
+    <form action="{{ route('search') }}" method="GET">
+        <div class="search-overlay" id="searchOverlay">
+            <button class="close-btn" onclick="toggleSearch()">✖</button>
+        <input type="text" name="query" class="search-input" placeholder="Type to search...">
+        </div>
+    </form>
     <div class="header-buttons">
         @auth
             @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')

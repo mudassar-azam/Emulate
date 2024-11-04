@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Seller\Item;
 use App\Models\Seller\ItemSize;
+use App\Models\Seller\Size;
 use App\Models\User;
 use App\Models\Category;
 
@@ -24,7 +25,8 @@ class ProductController extends Controller
         $products = Item::all();
         $categories = Category::all();
         $sizes = ItemSize::where('item_id', $id)->where('quantity', '>', 0)->get();
-        return view('buyer.product.product-details',compact('products','sizes','categories','item'));
+        $msizes = Size::all();
+        return view('buyer.product.product-details',compact('products','sizes','msizes','categories','item'));
     }
 
     public function rent(){
@@ -46,7 +48,8 @@ class ProductController extends Controller
         $products = Item::where('item_type' , 'for_rent')->get();
         $categories = Category::all();
         $sizes = ItemSize::where('item_id', $id)->where('quantity', '>', 0)->get();
-        return view('buyer.product.rent-details',compact('products','sizes','categories','item'));
+        $msizes = Size::all();
+        return view('buyer.product.rent-details',compact('products','sizes','msizes','categories','item'));
     }
 
     public function buyDetails($id){
@@ -54,7 +57,8 @@ class ProductController extends Controller
         $products = Item::where('item_type' , 'for_sale')->get();
         $categories = Category::all();
         $sizes = ItemSize::where('item_id', $id)->where('quantity', '>', 0)->get();
-        return view('buyer.product.buy-details',compact('products','sizes','categories','item'));
+        $msizes = Size::all();
+        return view('buyer.product.buy-details',compact('products','sizes','msizes','categories','item'));
     }
 
     public function wishlistProductDetails($name) {

@@ -14,13 +14,17 @@
             border-radius: 50%;
             padding: 5px;
         }
-        .size-option1 {
+        .size-option {
             cursor: pointer;
             padding: 5px;
             border-radius: 3px;
             transition: background-color 0.2s;
         }
-        .size-option1:hover {
+        .size-option:hover {
+            background-color: black;
+            color: white;
+        }
+        .size-option.selected {
             background-color: black;
             color: white;
         }
@@ -101,7 +105,7 @@
                 <div>
                     <b>Size: </b>
                     @foreach($sizes as $index => $size)
-                        <span class="size-option1">{{ $size->size->size }}</span>@if($index < count($sizes) - 1), @endif
+                        <span class="size-option" data-size="{{ $size->id }}">{{ $size->size->size }}</span>@if($index < count($sizes) - 1), @endif
                     @endforeach
                 </div>
 
@@ -110,18 +114,23 @@
                 </div>
 
                 <div class="product-pricing">
-                    <p><strong>Rent Price Per Day : ${{$item->rental_price}}</strong></p>
+                    <p class="retail">Sale Price : ${{$item->sale_price}}</p>
                 </div>
                 @auth
-                <div class="product-actions">
+                <div class="product-actions" style="gap:2em">
                     @if($sizes->count() > 0)
-                        <button style="width: 100%;" class="rent-btn" onclick="openPopup('rent')" >Add Rental To Cart</button>
+                    <form style="width: 100%;" action="{{route('buyer.order.now')}}" method="post" id="orderForm">
+                        @csrf
+                        <input type="hidden" name="selected_size" id="selected_size" />
+                        <input type="hidden" name="product_id" value="{{$item->id}}">
+                        <button  style="width: 100%;" class="rent-btn">Add To Cart</button>
+                    </form>
                     @else
-                        <button style="width: 100%;" class="rent-btn">Out Of Stock</button>
+                    <button style="width: 100%;" class="buy-now-btn">Out Of Stock</button>
                     @endif
                 </div>
                 @else
-                <button class="buy-now-btn" onclick="openPopup('signin')">Login ! To Rent </button>Item
+                <button class="buy-now-btn" onclick="openPopup('signin')">Login ! To Buy Item</button>
                 @endauth
             </div>
         </div>
@@ -146,90 +155,7 @@
             </div>
         </div>
     </div>
-    <section class="trending-container" style="background:#ddd;">
-        <h2 class="trending-title" style="text-align:left;padding-left:4rem;font-size:1rem;">You may also like</h2>
-        <div class="product-slider" id="uniqueProductSlider">
-            @foreach($products as $product)
-            <div class="product-item">
-                @php
-                $firstImage = $product->itemImages->first();
-                @endphp
-
-                @if($firstImage)
-                <a href="{{route('product.rent.details' , $product->id)}}"><img style="height: 86%;width: 100%;"
-                        src="{{ asset('item-images/' . $firstImage->image_name) }}" class="product-image"></a>
-                @else
-                <a href="{{route('product.rent.details' , $product->id)}}"><img src="{{asset('default.jfif')}}"
-                        class="product-image"></a>
-                @endif
-                <a href="{{route('product.rent.details' , $product->id)}}">
-                    <p class="product-name">{{$product->name}}</p>
-                </a>
-                <a href="{{route('product.rent.details' , $product->id)}}">
-                    <p class="product-price">${{$product->rental_price}}</p>
-                </a>
-            </div>
-            @endforeach
-        </div>
-        <div class="slider-controls">
-            <button class="slider-btn" onclick="scrollSlider(-1)">&#10094;</button>
-            <button class="slider-btn" onclick="scrollSlider(1)">&#10095;</button>
-        </div>
-    </section>
 </main>
-
-<!-- Rent popup -->
-<div id="rent-popup" class="popup">
-    <div class="container">
-        <div class="d-flex justify-between"
-            style="margin-bottom:40px;border-bottom:1px solid lightgray;padding:0.8rem 1rem;">
-            <h2>Rent Item</h2>
-            <a href="#">Need help?</a>
-        </div>
-        <div class="sub-container">
-
-            <label for="lease-term">Lease Term</label>
-            <div class="lease-term">
-                <button class="active" data-days="1">1 Day</button>
-                <button data-days="2">2 Day</button>
-                <button data-days="3">3 Day</button>
-                <button data-days="4">4 Day</button>
-                <button data-days="5">5 Day</button>
-            </div>
-
-            <label for="date">Date</label>
-            <div class="calendar-header">
-                <div class="calendar-navigation">
-                    <button onclick="prevMonth()"><i class="fa-solid fa-chevron-left"></i></button>
-                    <span id="currentMonth">September 2024</span>
-                    <button onclick="nextMonth()"><i class="fa-solid fa-chevron-right"></i></button>
-                </div>
-            </div>
-            <!-- Day names row -->
-            <div id="dayNames" class="calendar-day-names">
-                <div>S</div>
-                <div>M</div>
-                <div>T</div>
-                <div>W</div>
-                <div>T</div>
-                <div>F</div>
-                <div>S</div>
-            </div>
-            <div class="calendar-grid" id="calendarGrid">
-                <!-- Calendar days will be dynamically generated -->
-            </div>
-
-            <label for="size">Size</label>
-            <select name="size" class="msize">
-                @foreach($sizes as $size)
-                    <option value="{{$size->id}}">{{$size->size->size}}</option>
-                @endforeach    
-            </select>
-
-            <button class="apply-btn" onclick="applyRent()">Add To Cart</button>
-        </div>
-    </div>
-</div>
 <div id="addnewitem-popup" class="popup">
     <div class="container">
         <div class="d-flex justify-between"
@@ -295,24 +221,18 @@
                 </div>
 
                 <label for="size">Size</label>
-                <div id="size" style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    @foreach($msizes as $size)
-                        <div style="display: flex; align-items: center;">
-                            <label>
-                                <input type="checkbox" name="size_id[]" value="{{ $size->id }}" id="size-checkbox-{{ $size->id }}" onchange="toggleQuantityInput(this)">
-                                {{ $size->size }}
-                            </label>
-                            <input type="number" name="quantity[{{ $size->id }}]" placeholder="add quantity"
-                            id="quantity-input-{{ $size->id }}" style="margin-left: 10px;margin-top: 10px; display: none; width: 110px;" >
-                        </div>
-                    @endforeach
-                </div>
+                <select id="size" name="size">
+                    <option value="L" {{ $item->size == 'L' ? 'selected' : '' }}>L</option>
+                    <option value="M" {{ $item->size == 'M' ? 'selected' : '' }}>M</option>
+                    <option value="S" {{ $item->size == 'S' ? 'selected' : '' }}>S</option>
+                </select>
 
                 <button type="submit" class="apply-btn">Update Item</button>
             </form>
         </div>
     </div>
 </div>
+
 
 @endsection
 @push('scripts')
@@ -323,19 +243,7 @@ function goBack() {
     window.history.back();
 }
 </script>
-<script>
-    function toggleQuantityInput(checkbox) {
-        const quantityInput = document.getElementById(`quantity-input-${checkbox.value}`);
-        if (checkbox.checked) {
-            quantityInput.style.display = 'inline-block';
-            quantityInput.setAttribute('required', 'required');
-        } else {
-            quantityInput.style.display = 'none';
-            quantityInput.removeAttribute('required');
-            quantityInput.value = '';
-        }
-    }
-</script>
+
 <link rel='stylesheet' href='https://sachinchoolur.github.io/lightslider/dist/css/lightslider.css'>
 <script src='https://sachinchoolur.github.io/lightslider/dist/js/lightslider.js'></script>
 <script>
@@ -347,153 +255,29 @@ $('#lightSlider').lightSlider({
     thumbItem: 6
 });
 </script>
-
-<!-- to generate calendar -->
 <script>
-const months = [
-    'January', 'February', 'March', 'April', 'May', 'June', 'July',
-    'August', 'September', 'October', 'November', 'December'
-];
-
-let currentDate = new Date();
-let leaseDays = 1;
-const calendarGrid = document.getElementById('calendarGrid');
-const currentMonth = document.getElementById('currentMonth');
-
-// Generate the calendar
-function generateCalendar(year, month) {
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    calendarGrid.innerHTML = '';
-
-    // Empty days for the first row
-    for (let i = 0; i < firstDay; i++) {
-        const emptyCell = document.createElement('button');
-        emptyCell.disabled = true;
-        calendarGrid.appendChild(emptyCell);
-    }
-
-    // Days of the month
-    for (let day = 1; day <= daysInMonth; day++) {
-        const dayButton = document.createElement('button');
-        dayButton.textContent = day;
-        dayButton.addEventListener('click', () => selectDate(dayButton, day, daysInMonth));
-        calendarGrid.appendChild(dayButton);
-    }
-}
-
-// Select a date and highlight the range according to lease term
-function selectDate(button, startDay, totalDays) {
-    document.querySelectorAll('.calendar-grid button').forEach(btn => btn.classList.remove('range'));
-    button.classList.add('range');
-
-    for (let i = 1; i < leaseDays; i++) {
-        const nextDay = startDay + i;
-        const dayIndex = [...calendarGrid.children].indexOf(button);
-        const nextIndex = dayIndex + i;
-
-        if (nextDay <= totalDays && nextIndex < calendarGrid.children.length) {
-            const nextButton = calendarGrid.children[nextIndex];
-            if (nextButton && !nextButton.disabled) {
-                nextButton.classList.add('range');
-            }
-        }
-    }
-}
-
-// Move to the next month
-function nextMonth() {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    updateCalendar();
-}
-
-// Move to the previous month
-function prevMonth() {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    updateCalendar();
-}
-
-// Update the calendar display
-function updateCalendar() {
-    const month = currentDate.getMonth();
-    const year = currentDate.getFullYear();
-    currentMonth.textContent = `${months[month]} ${year}`;
-    generateCalendar(year, month);
-}
-
-// Lease term selection
-document.querySelectorAll('.lease-term button').forEach(button => {
-    button.addEventListener('click', () => {
-        document.querySelectorAll('.lease-term button').forEach(btn => btn.classList.remove(
-            'active'));
-        button.classList.add('active');
-        leaseDays = parseInt(button.getAttribute('data-days'));
+    document.querySelectorAll('.size-option').forEach(function(sizeOption) {
+        sizeOption.addEventListener('click', function() {
+            document.querySelectorAll('.size-option').forEach(function(item) {
+                item.classList.remove('selected');
+            });
+            
+            this.classList.add('selected');
+            
+            document.getElementById('selected_size').value = this.getAttribute('data-size');
+        });
     });
-});
-
-function applyRent() {
-    const leaseTerm = document.querySelector('.lease-term button.active').textContent;
-    const selectedButton = document.querySelector('.calendar-grid button.range');
-    const size = document.querySelector('.msize').value;
-
-    if (!selectedButton) {
-        toastr.error('Select Date', 'Success', {
-            positionClass: 'toast-top-right',
-            timeOut: 1000
-        });
-        return;
-    }
-
-
-    if (!size) {
-        toastr.error('Select Size', 'Success', {
-            positionClass: 'toast-top-right',
-            timeOut: 1000
-        });
-        return;
-    }
-
-    const selectedDate = parseInt(selectedButton.textContent);
-    const month = currentDate.getMonth() + 1;
-    const year = currentDate.getFullYear();
-
-    let startDate = `${selectedDate}/${month}/${year}`;
-    let endDate = startDate;
-
-    if (leaseDays > 1) {
-        let endDay = selectedDate + (leaseDays - 1);
-
-        const daysInMonth = new Date(year, currentDate.getMonth() + 1, 0).getDate();
-        if (endDay > daysInMonth) {
-            const nextMonth = (currentDate.getMonth() + 2) % 12 || 12;
-            const nextYear = nextMonth === 1 ? year + 1 : year;
-            endDay = endDay - daysInMonth;
-            endDate = `${endDay}/${nextMonth}/${nextYear}`;
-        } else {
-            endDate = `${endDay}/${month}/${year}`;
+    document.getElementById('orderForm').addEventListener('submit', function(event) {
+        if (!document.getElementById('selected_size').value) {
+            event.preventDefault(); // Prevent form submission
+            
+            // Show Toastr error notification
+            toastr.error('Please select a size before adding to cart.', 'Error', {
+                positionClass: 'toast-top-right',
+                timeOut: 3000
+            });
         }
-    }
-
-    const data = {
-        lease_term: leaseTerm,
-        start_date: startDate,
-        end_date: endDate,
-        size: size,
-        product_id: {{$item->id}},
-    };
-
-
-    axios.post('/orders', data)
-        .then(response => {
-            window.location.reload();
-        })
-        .catch(error => {
-            console.error('There was an error!', error);
-            alert('Failed to submit the order.');
-        });
-}
-
-updateCalendar();
+    });
 </script>
 <script>
 function toggleFields() {

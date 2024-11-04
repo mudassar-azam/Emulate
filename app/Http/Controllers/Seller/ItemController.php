@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Seller\Item;
 use App\Models\Seller\ItemImage;
+use App\Models\Seller\ItemSize;
 
 class ItemController extends Controller
 {
@@ -21,9 +22,7 @@ class ItemController extends Controller
             'item_type' => 'required',
             'rental_price' => 'required_if:item_type,for_rent',
             'sale_price' => 'required_if:item_type,for_sale',
-            'stock' => 'required',
             'description' => 'required',
-            'size' => 'required',
         ];
     
         $validator = Validator::make($request->all(), $rules);
@@ -63,11 +62,22 @@ class ItemController extends Controller
                 ]);
             }
         }
+
+        foreach ($request->size_id as $sizeId) {
+            $quantity = $request->quantity[$sizeId] ?? null;
+            if ($quantity !== null) { 
+                ItemSize::create([
+                    'item_id' => $item->id,
+                    'size_id' => $sizeId,
+                    'quantity' => $quantity,
+                ]);
+            }
+        }
     
         return response()->json(['success' => true, 'message' => 'Item created successfully!']);
     }
 
-  public function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $rules = [
             'name' => 'required',
@@ -75,9 +85,9 @@ class ItemController extends Controller
             'item_type' => 'required',
             'rental_price' => 'required_if:item_type,for_rent',
             'sale_price' => 'required_if:item_type,for_sale',
-            'stock' => 'required',
             'description' => 'required',
-            'size' => 'required',
+            'size_id' => 'required|array|min:1', 
+            'quantity' => 'required|array',
             'images.*' => 'image',
         ];
 
@@ -128,10 +138,24 @@ class ItemController extends Controller
                 ]);
             }
         }
+
+        foreach ($request->size_id as $sizeId) {
+            $quantity = $request->quantity[$sizeId] ?? null;
+    
+            $itemSize = ItemSize::where('item_id', $id)->where('size_id', $sizeId)->first();
+    
+            if ($itemSize) {
+                $itemSize->update(['quantity' => $quantity]);
+            } else {
+                ItemSize::create([
+                    'item_id' => $item->id,
+                    'size_id' => $sizeId,
+                    'quantity' => $quantity,
+                ]);
+            }
+        }
         
 
         return response()->json(['success' => true, 'message' => 'Item updated successfully!']);
     }
-
-    
 }

@@ -17,7 +17,6 @@ class Item extends Model
         'user_id',
         'category_id',
         'item_type',
-        'stock',
         'description',
         'start_date',
         'end_date',

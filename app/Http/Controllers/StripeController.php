@@ -83,10 +83,8 @@ class StripeController extends Controller
         foreach($orders as $order){
             $order->payment_status = "paid";
 
-            $product = $order->product;
-            $product->stock = $product->stock - 1;
-            $product->save(); 
-
+            $order->itemsize->quantity = $order->itemsize->quantity - 1;
+            $order->itemsize->save();
             $order->save();
 
             OrdersInvoice::create([

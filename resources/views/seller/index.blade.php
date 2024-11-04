@@ -194,10 +194,6 @@
 
                 </div>
 
-                <div id="for-stock" >
-                    <label for="stock">Stock</label>
-                    <input type="number" id="stock" name="stock" placeholder="Quantity Available">
-                </div>
 
                 <div id="description" >
                     <label for="description">Description</label>
@@ -205,12 +201,18 @@
                 </div>
 
                 <label for="size">Size</label>
-                <select id="size" name="size">
-                    <option selected disabled>Select size</option>
-                    <option value="L">L</option>
-                    <option value="M">M</option>
-                    <option value="S">S</option>
-                </select>
+                <div id="size" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    @foreach($sizes as $size)
+                        <div style="display: flex; align-items: center;">
+                            <label>
+                                <input type="checkbox" name="size_id[]" value="{{ $size->id }}" id="size-checkbox-{{ $size->id }}" onchange="toggleQuantityInput(this)">
+                                {{ $size->size }}
+                            </label>
+                            <input type="number" name="quantity[{{ $size->id }}]" placeholder="add quantity"
+                            id="quantity-input-{{ $size->id }}" style="margin-left: 10px;margin-top: 10px; display: none; width: 110px;" >
+                        </div>
+                    @endforeach
+                </div>
 
                 <button type="submit" class="apply-btn">Add Item</button>
             </form>
@@ -335,6 +337,20 @@
             forSaleDiv.style.display = 'block';
         } else if (itemType === 'for_rent') {
             forRentDiv.style.display = 'block';
+        }
+    }
+
+</script>
+<script>
+    function toggleQuantityInput(checkbox) {
+        const quantityInput = document.getElementById(`quantity-input-${checkbox.value}`);
+        if (checkbox.checked) {
+            quantityInput.style.display = 'inline-block';
+            quantityInput.setAttribute('required', 'required');
+        } else {
+            quantityInput.style.display = 'none';
+            quantityInput.removeAttribute('required');
+            quantityInput.value = '';
         }
     }
 </script>

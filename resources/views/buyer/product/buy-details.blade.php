@@ -63,11 +63,13 @@
                     <div style="display:flex;width: 50%;justify-content: space-between;align-items:center;">
                         <a href="{{route('seller.profile' , $item->user->id)}}"><span
                                 class="seller-name">{{$item->user->name}}</span></a>
-                        @auth
-                            @if(auth()->user()->role == 'seller' || auth()->user()->role == 'admin')
-                                <button onclick="openPopup('addnewitem')"><i class="fa-regular fa-pen-to-square"></i></button>
-                            @endif
-                        @endauth
+                            @auth 
+                                @if(auth()->user()->role == 'admin')
+                                    <button onclick="openPopup('addnewitem')"><i class="fa-regular fa-pen-to-square"></i></button>
+                                @elseif(auth()->user()->role == 'seller' &&  $item->user->id == auth()->user()->id)   
+                                    <button onclick="openPopup('addnewitem')"><i class="fa-regular fa-pen-to-square"></i></button> 
+                                @endif  
+                            @endauth
                     </div>
                 </div>
                 <div class="d-flex justify-between align-center">
@@ -249,11 +251,18 @@
                 </div>
 
                 <label for="size">Size</label>
-                <select id="size" name="size">
-                    <option value="L" {{ $item->size == 'L' ? 'selected' : '' }}>L</option>
-                    <option value="M" {{ $item->size == 'M' ? 'selected' : '' }}>M</option>
-                    <option value="S" {{ $item->size == 'S' ? 'selected' : '' }}>S</option>
-                </select>
+                <div id="size" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    @foreach($msizes as $size)
+                        <div style="display: flex; align-items: center;">
+                            <label>
+                                <input type="checkbox" name="size_id[]" value="{{ $size->id }}" id="size-checkbox-{{ $size->id }}" onchange="toggleQuantityInput(this)">
+                                {{ $size->size }}
+                            </label>
+                            <input type="number" name="quantity[{{ $size->id }}]" placeholder="add quantity"
+                            id="quantity-input-{{ $size->id }}" style="margin-left: 10px;margin-top: 10px; display: none; width: 110px;" >
+                        </div>
+                    @endforeach
+                </div>
 
                 <button type="submit" class="apply-btn">Update Item</button>
             </form>
@@ -271,7 +280,19 @@ function goBack() {
     window.history.back();
 }
 </script>
-
+<script>
+    function toggleQuantityInput(checkbox) {
+        const quantityInput = document.getElementById(`quantity-input-${checkbox.value}`);
+        if (checkbox.checked) {
+            quantityInput.style.display = 'inline-block';
+            quantityInput.setAttribute('required', 'required');
+        } else {
+            quantityInput.style.display = 'none';
+            quantityInput.removeAttribute('required');
+            quantityInput.value = '';
+        }
+    }
+</script>
 <link rel='stylesheet' href='https://sachinchoolur.github.io/lightslider/dist/css/lightslider.css'>
 <script src='https://sachinchoolur.github.io/lightslider/dist/js/lightslider.js'></script>
 <script>
