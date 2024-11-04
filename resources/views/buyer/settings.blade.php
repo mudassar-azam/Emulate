@@ -92,7 +92,7 @@ td img {
 }
 </style>
 <main class="main">
-    <div class="mp-back">
+    <div style="cursor:pointer;" class="mp-back" onclick="goBack()">
         <i class="fa-solid fa-arrow-left"></i>
     </div>
     <div class="mp-menubar ">
@@ -265,7 +265,11 @@ document.querySelector('.mp-menubar').addEventListener('click', function() {
     }
 });
 </script>
-
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
 <script>
     $(document).ready(function() {
         $('.delete-order').click(function() {

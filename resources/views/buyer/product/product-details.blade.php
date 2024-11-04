@@ -144,7 +144,7 @@
                             @endif
                         @else
                             @if($sizes->count() > 0)
-                                <form style="width: 100%;" action="{{route('buyer.order.now')}}" method="post">
+                                <form style="width: 100%;" action="{{route('buyer.order.now')}}" method="post" id="orderForm">
                                     @csrf
                                     <input type="hidden" name="selected_size" id="selected_size" />
                                     <input type="hidden" name="product_id" value="{{$item->id}}">
@@ -354,6 +354,30 @@
 function goBack() {
     window.history.back();
 }
+</script>
+<script>
+    document.querySelectorAll('.size-option').forEach(function(sizeOption) {
+        sizeOption.addEventListener('click', function() {
+            document.querySelectorAll('.size-option').forEach(function(item) {
+                item.classList.remove('selected');
+            });
+            
+            this.classList.add('selected');
+            
+            document.getElementById('selected_size').value = this.getAttribute('data-size');
+        });
+    });
+    document.getElementById('orderForm').addEventListener('submit', function(event) {
+        if (!document.getElementById('selected_size').value) {
+            event.preventDefault(); // Prevent form submission
+            
+            // Show Toastr error notification
+            toastr.error('Please select a size before adding to cart.', 'Error', {
+                positionClass: 'toast-top-right',
+                timeOut: 3000
+            });
+        }
+    });
 </script>
 <script>
     function toggleQuantityInput(checkbox) {

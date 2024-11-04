@@ -15,12 +15,14 @@ class CartSeeder extends Seeder
             [
                 'product_id' => rand(1, 5),
                 'user_id' => 2,
+                'size_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'product_id' => rand(1, 5),
                 'user_id' => 2,
+                'size_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
