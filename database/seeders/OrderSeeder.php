@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-
+use Carbon\Carbon;
 
 class OrderSeeder extends Seeder
 {
@@ -13,7 +13,7 @@ class OrderSeeder extends Seeder
     {
         $orders = [
             [
-                'user_id' => 2,
+                'user_id' => 1,
                 'product_id' => rand(1, 5),
                 'product_owner_id' => rand(3, 6),
                 'lease_term' => null,
@@ -22,22 +22,26 @@ class OrderSeeder extends Seeder
                 'type' => 'cart',
                 'size_id' => 1,
                 'total_payment' => '100',
-                'payment_status' => 'due',
+                'payment_status' => 'paid',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
-                'user_id' => 2,
+                'user_id' => 1,
                 'product_id' => rand(1, 5),
                 'product_owner_id' => rand(3, 6),
                 'lease_term' => null,
                 'start_date' => null,
                 'end_date' => null,
                 'type' => 'cart',
-                'size_id' => 2,
+                'size_id' => 1,
                 'total_payment' => '100',
-                'payment_status' => 'due',
+                'payment_status' => 'paid',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
-                'user_id' => 2,
+                'user_id' => 1,
                 'product_id' => rand(1, 5),
                 'product_owner_id' => rand(3, 6),
                 'lease_term' => '1 day',
@@ -46,10 +50,12 @@ class OrderSeeder extends Seeder
                 'type' => 'rent',
                 'size_id' => 3,
                 'total_payment' => '100',
-                'payment_status' => 'due',
+                'payment_status' => 'paid',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
-                'user_id' => 2,
+                'user_id' => 1,
                 'product_id' => rand(1, 5),
                 'product_owner_id' => rand(3, 6),
                 'lease_term' => '5 days',
@@ -58,10 +64,12 @@ class OrderSeeder extends Seeder
                 'type' => 'rent',
                 'size_id' => 4,
                 'total_payment' => '100',
-                'payment_status' => 'due',
+                'payment_status' => 'paid',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
-                'user_id' => 2,
+                'user_id' => 1,
                 'product_id' => rand(1, 5),
                 'product_owner_id' => rand(3, 6),
                 'lease_term' => null,
@@ -70,7 +78,9 @@ class OrderSeeder extends Seeder
                 'type' => 'buy',
                 'size_id' => 5,
                 'total_payment' => '100',
-                'payment_status' => 'due',
+                'payment_status' => 'paid',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
                 'user_id' => 2,
@@ -82,7 +92,9 @@ class OrderSeeder extends Seeder
                 'size_id' => 5,
                 'type' => 'buy',
                 'total_payment' => '100',
-                'payment_status' => 'due',
+                'payment_status' => 'paid',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
         ];
 

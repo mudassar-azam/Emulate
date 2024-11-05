@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers\Seller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\InvitEmail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -12,10 +12,12 @@ use App\Models\Seller\Post;
 use App\Models\Seller\Size;
 use App\Models\Seller\ItemSize;
 use App\Models\Buyer\Order;
-use App\Models\User;
 use App\Models\Information;
 use App\Models\Subscriber;
+use Illuminate\Support\Carbon;
 use App\Models\Category;
+use App\Mail\InvitEmail;
+use App\Models\User;
 
 class SellerFrontController extends Controller
 {
@@ -70,7 +72,42 @@ class SellerFrontController extends Controller
 
 
     public function dashboard(){
-        return view('seller.dashboard');
+
+        $orders = Order::where('payment_status','paid')->where('user_id',Auth::user()->id)->get();
+        $salesData = [
+            'Mon' => 0,
+            'Tue' => 0,
+            'Wed' => 0,
+            'Thu' => 0,
+            'Fri' => 0,
+            'Sat' => 0,
+            'Sun' => 0,
+        ];
+        foreach ($orders as $order) {
+            $dayOfWeek = Carbon::parse($order->created_at)->format('D'); 
+            $salesData[$dayOfWeek] += $order->total_payment;
+        }
+
+        $monthlyOrders = Order::where('payment_status', 'paid')
+        ->where('user_id', Auth::user()->id)
+        ->whereYear('created_at', date('Y'))
+        ->select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as total_orders'))
+        ->groupBy('month')
+        ->orderBy('month')
+        ->get();
+
+        $data = [
+            ['Month', 'Customers']
+        ];
+        
+        $monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    
+        for ($i = 1; $i <= 12; $i++) {
+            $monthlyTotal = $monthlyOrders->firstWhere('month', $i)->total_orders ?? 0;
+            $data[] = [$monthNames[$i - 1], $monthlyTotal];
+        }
+
+        return view('seller.dashboard',compact('salesData','data'));
     }
 
     public function order()
