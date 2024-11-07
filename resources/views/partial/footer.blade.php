@@ -105,11 +105,26 @@
                 <input type="text" name="name" id="name" placeholder="Name" required>
 
                 <label for="email">Email</label>
-                <input style="width: 100%;padding: 6px;margin-bottom: 20px;border: 1px solid #ddd;border-radius: 5px;" type="email" name="email" id="email" placeholder="Email" required>
+                <input style="width: 100%;padding: 6px;margin-bottom: 20px;border: 1px solid #ddd;border-radius: 5px;"
+                type="email" name="email" id="email" placeholder="Email" required>
 
 
-                <label for="password">Password</label>
-                <input style="width: 100%;padding: 6px;margin-bottom: 20px;border: 1px solid #ddd;border-radius: 5px;" type="password" name="password" id="password" placeholder="Password" required>
+                <label for="profession">Profession</label>
+                <input style="width: 100%;padding: 6px;margin-bottom: 20px;border: 1px solid #ddd;border-radius: 5px;"
+                type="text" name="profession" id="profession" placeholder="Profession" required>
+
+                <label for="facebook_link">Facebook Link</label>
+                <input type="text" id="facebook_link" name="facebook_link">
+
+                <label for="youtube_link">Youtube Link</label>
+                <input type="text" id="youtube_link" name="youtube_link">
+
+                <label for="instagram_link">Instagram Link</label>
+                <input type="text" id="instagram_link" name="instagram_link">
+
+                <label for="twitter_link">Twitter Link</label>
+                <input type="text" id="twitter_link" name="twitter_link">
+
                 <span style="margin:10px;">You have to wait for approval after that you can login*</span>
 
                 <button style="margin:10px;" type="submit" class="apply-btn">Upload Information</button>

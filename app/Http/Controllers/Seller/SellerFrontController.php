@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Seller\SellerSettings;
 use Illuminate\Http\Request;
 use App\Models\Seller\Item;
 use App\Models\Seller\Post;
@@ -139,32 +140,20 @@ class SellerFrontController extends Controller
 
             $request->status = "approved";
             $request->save();
-    
-            $user->role = "seller";
-            $user->password = Hash::make($request->password);
-            $user->name = $request->name;
-            $user->save();
-    
-            $signUpLink = route('buyer.front');
+            $user->delete();
+            $signUpLink = route('buyer.front', ['email' => $request->email, 'modal' => 'true']);
             Mail::to($request->email)->send(new InvitEmail($signUpLink));
     
             return redirect()->back();
 
         }else{
 
+            session()->put('request_id', $request->id);
             $request->status = "approved";
             $request->save();
-    
-            User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'role' => "seller",
-            ]);
-    
-            $signUpLink = route('buyer.front');
+
+            $signUpLink = route('buyer.front', ['email' => $request->email, 'modal' => 'true']);
             Mail::to($request->email)->send(new InvitEmail($signUpLink));
-    
             return redirect()->back();
         }
     }

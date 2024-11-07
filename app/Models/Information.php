@@ -9,5 +9,5 @@ class Information extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','email', 'password'];
+    protected $fillable = ['name','email', 'profession','facebook_link','youtube_link','instagram_link','twitter_link'];
 }

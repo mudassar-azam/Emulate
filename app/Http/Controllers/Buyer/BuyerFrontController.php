@@ -16,7 +16,6 @@ class BuyerFrontController extends Controller
         $sellers = User::where('role', 'seller')->get();
         $items = Item::all();
 
-        // Get the email and modal parameters from the request
         $email = $request->query('email');
         $showModal = $request->query('modal') === 'true';
 
