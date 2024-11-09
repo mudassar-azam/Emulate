@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\Seller;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Seller\Item;
 use App\Models\Seller\ItemImage;
 use App\Models\Seller\ItemSize;
+use App\Models\Seller\Item;
+use App\Models\Seller\Size;
 
 class ItemController extends Controller
 {
@@ -19,21 +19,21 @@ class ItemController extends Controller
             'images' => 'required',
             'images.*' => 'image',
             'category_id' => 'required',
-            'item_type' => 'required',
-            'rental_price' => 'required_if:item_type,for_rent',
-            'sale_price' => 'required_if:item_type,for_sale',
+            // 'item_type' => 'required',
+            // 'rental_price' => 'required_if:item_type,for_rent',
+            'sale_price' => 'required',
             'description' => 'required',
         ];
     
         $validator = Validator::make($request->all(), $rules);
     
-        $validator->sometimes('start_date', 'required|date|before:end_date', function ($input) {
-            return $input->item_type === 'for_rent';
-        });
+        // $validator->sometimes('start_date', 'required|date|before:end_date', function ($input) {
+        //     return $input->item_type === 'for_rent';
+        // });
     
-        $validator->sometimes('end_date', 'required|date|after:start_date', function ($input) {
-            return $input->item_type === 'for_rent';
-        });
+        // $validator->sometimes('end_date', 'required|date|after:start_date', function ($input) {
+        //     return $input->item_type === 'for_rent';
+        // });
     
         if ($validator->fails()) {
             $errors = [];
@@ -48,6 +48,7 @@ class ItemController extends Controller
     
         $data = $request->all();
         $data['user_id'] = Auth::user()->id;
+        $data['item_type'] = "for_sale";
         $item = Item::create($data);
     
         if ($request->hasFile('images')) {
@@ -73,6 +74,26 @@ class ItemController extends Controller
                 ]);
             }
         }
+
+        $sizeIds = [];
+        if (!empty($request->sizes)) {
+            foreach ($request->sizes as $size) {
+                $n_size = new Size();
+                $n_size->size = $size;
+                $n_size->save();
+                $sizeIds[] = $n_size->id;
+            }
+        }
+
+        if (!empty($request->sizes) && !empty($sizeIds && !empty($request->d_quantity))) {
+            foreach ($sizeIds as $index => $id) {
+                ItemSize::create([
+                    'item_id' => $item->id,
+                    'size_id' => $id,
+                    'quantity' => $request->d_quantity[$index] ?? 0,
+                ]);
+            }
+        }
     
         return response()->json(['success' => true, 'message' => 'Item created successfully!']);
     }
@@ -82,9 +103,9 @@ class ItemController extends Controller
         $rules = [
             'name' => 'required',
             'category_id' => 'required',
-            'item_type' => 'required',
-            'rental_price' => 'required_if:item_type,for_rent',
-            'sale_price' => 'required_if:item_type,for_sale',
+            // 'item_type' => 'required',
+            // 'rental_price' => 'required_if:item_type,for_rent',
+            'sale_price' => 'required',
             'description' => 'required',
             'size_id' => 'required|array|min:1', 
             'quantity' => 'required|array',
@@ -93,13 +114,13 @@ class ItemController extends Controller
 
         $validator = Validator::make($request->all(), $rules);
 
-        $validator->sometimes('start_date', 'required|date|before:end_date', function ($input) {
-            return $input->item_type === 'for_rent';
-        });
+        // $validator->sometimes('start_date', 'required|date|before:end_date', function ($input) {
+        //     return $input->item_type === 'for_rent';
+        // });
 
-        $validator->sometimes('end_date', 'required|date|after:start_date', function ($input) {
-            return $input->item_type === 'for_rent';
-        });
+        // $validator->sometimes('end_date', 'required|date|after:start_date', function ($input) {
+        //     return $input->item_type === 'for_rent';
+        // });
 
         if ($validator->fails()) {
             $errors = [];
@@ -154,6 +175,28 @@ class ItemController extends Controller
                 ]);
             }
         }
+
+        $sizeIds = [];
+        if (!empty($request->sizes)) {
+            foreach ($request->sizes as $size) {
+                $n_size = new Size();
+                $n_size->size = $size;
+                $n_size->save();
+                $sizeIds[] = $n_size->id;
+            }
+        }
+
+        if (!empty($request->sizes) && !empty($sizeIds && !empty($request->d_quantity))) {
+            foreach ($sizeIds as $index => $id) {
+                ItemSize::create([
+                    'item_id' => $item->id,
+                    'size_id' => $id,
+                    'quantity' => $request->d_quantity[$index] ?? 0,
+                ]);
+            }
+        }
+
+        
         
 
         return response()->json(['success' => true, 'message' => 'Item updated successfully!']);

@@ -213,20 +213,20 @@
                     @endforeach
                 </select>
 
-                <label for="item_type">Item Type</label>
+                <!-- <label for="item_type">Item Type</label>
                 <select id="item_type" name="item_type" onchange="toggleFields()">
                     <option selected disabled>Select Type</option>
                     <option value="for_sale" {{ $item->item_type == 'for_sale' ? 'selected' : '' }}>For Sale</option>
                     <option value="for_rent" {{ $item->item_type == 'for_rent' ? 'selected' : '' }}>For Rent</option>
-                </select>
+                </select> -->
 
-                <div id="for-sale" style="display: {{ $item->item_type == 'for_sale' ? 'block' : 'none' }}">
+                <div id="for-sale">
                     <label for="sale_price">Sale Price</label>
                     <input type="number" id="sale_price" name="sale_price" value="{{ $item->sale_price }}"
                         placeholder="Sale Price">
                 </div>
 
-                <div id="for-rent" style="display: {{ $item->item_type == 'for_rent' ? 'block' : 'none' }}">
+                <!-- <div id="for-rent" style="display: {{ $item->item_type == 'for_rent' ? 'block' : 'none' }}">
                     <label for="rental_price">Rental Price Per Day</label>
                     <input type="number" id="rental_price" name="rental_price" value="{{ $item->rental_price }}"
                         placeholder="Rental Price">
@@ -238,7 +238,7 @@
                     <input
                         style="width: 100%;padding: 6px;margin-bottom: 20px;border: 1px solid #ddd;border-radius: 5px;"
                         type="date" id="end_date" name="end_date" value="{{ $item->end_date }}">
-                </div>
+                </div> -->
 
                 <div id="for-stock">
                     <label for="stock">Stock</label>

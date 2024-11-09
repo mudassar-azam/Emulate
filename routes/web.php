@@ -21,15 +21,6 @@ use App\Http\Controllers\SearchController;
 
 use Illuminate\Support\Facades\Artisan;
 
-Route::get('/reset-database', function () {
-    try {
-        Artisan::call('migrate:fresh --seed');
-        return 'Database reset and seeded successfully!';
-    } catch (\Exception $e) {
-        return 'Error: ' . $e->getMessage();
-    }
-});
-
 // auth 
     Auth::routes();
     Route::post('register', [RegisterController::class, 'register'])->name('register');

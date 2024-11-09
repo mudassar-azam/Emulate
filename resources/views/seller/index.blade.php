@@ -170,19 +170,19 @@
                     @endforeach
                 </select>
 
-                <label for="item_type">Item Type</label>
+                <!-- <label for="item_type">Item Type</label>
                 <select id="item_type" name="item_type" onchange="toggleFields()">
                     <option selected disabled>Select Type</option>
                     <option value="for_sale">For Sale</option>
                     <option value="for_rent">For Rent</option>
-                </select>
+                </select> -->
 
-                <div id="for-sale" style="display: none;">
+                <div id="for-sale">
                     <label for="sale_price">Sale Price</label>
                     <input type="number" id="sale_price" name="sale_price" placeholder="Sale Price">
                 </div>
 
-                <div id="for-rent" style="display: none;">
+                <!-- <div id="for-rent" style="display: none;">
                     <label for="rental_price">Rental Price Per Day</label>
                     <input type="number" id="rental_price" name="rental_price" placeholder="Rental Price">
 
@@ -192,7 +192,7 @@
                     <label for="end_date">End Date</label>
                     <input style="width: 100%;padding: 6px;margin-bottom: 20px;border: 1px solid #ddd;border-radius: 5px;" type="date" id="end_date" name="end_date" placeholder="Rental Price">
 
-                </div>
+                </div> -->
 
 
                 <div id="description" >
@@ -209,9 +209,17 @@
                                 {{ $size->size }}
                             </label>
                             <input type="number" name="quantity[{{ $size->id }}]" placeholder="add quantity"
-                            id="quantity-input-{{ $size->id }}" style="margin-left: 10px;margin-top: 10px; display: none; width: 110px;" >
+                            id="quantity-input-{{ $size->id }}" min="1"
+                            oninput="this.value = this.value < 1 ? 1 : this.value" style="margin-left: 10px;margin-top: 10px; display: none; width: 110px;" >
                         </div>
                     @endforeach
+                </div>
+
+                <div style="margin:1em 0em;padding:10px;">
+                    <button type="button" onclick="addInput()">Add Custom Size</button>
+                </div>
+
+                <div id="inputContainer">
                 </div>
 
                 <button type="submit" class="apply-btn">Add Item</button>
@@ -340,6 +348,28 @@
         }
     }
 
+</script>
+<script>
+    function addInput() {
+        const inputGroup = document.createElement("div");
+        inputGroup.className = "input-group";
+        const sizeInput = document.createElement("input");
+        sizeInput.type = "text";
+        sizeInput.name = "sizes[]";
+        sizeInput.placeholder = "Enter Size";
+
+        const quantityInput = document.createElement("input");
+        quantityInput.type = "number";
+        quantityInput.name = "d_quantity[]";
+        quantityInput.placeholder = "Enter Quantity";
+        quantityInput.min = 1;
+        quantityInput.required = true;
+        quantityInput.setAttribute("oninput", "this.value = this.value < 1 ? 1 : this.value");
+
+        inputGroup.appendChild(sizeInput);
+        inputGroup.appendChild(quantityInput);
+        document.getElementById("inputContainer").appendChild(inputGroup);
+    }
 </script>
 <script>
     function toggleQuantityInput(checkbox) {
